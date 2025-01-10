@@ -24,10 +24,12 @@ def git(ctx, message):
     ctx.run(f"git push")
 
 @task
-def push(ctx, message):
+def push_all(ctx, message):
     # freeze requirements and update requirements.txt
     ctx.run("pip freeze > requirements.txt")
     ctx.run("git add requirements.txt")
+    ctx.run("git commit -m 'update requirements.txt'")
+    ctx.run("git add .")
     ctx.run(f"git commit -m '" + message + "'")
     ctx.run("git push")
 
