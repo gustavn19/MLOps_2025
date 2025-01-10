@@ -23,6 +23,15 @@ def git(ctx, message):
     ctx.run(f"git commit -m '{message}'")
     ctx.run(f"git push")
 
+@task
+def push(ctx, message):
+    # freeze requirements and update requirements.txt
+    ctx.run("pip freeze > requirements.txt")
+    ctx.run("git add requirements.txt")
+    ctx.run(f"git commit -m '" + message + "'")
+    ctx.run("git push")
+
+
 
 @task
 def dvc(ctx, folder: str = "data", message: str = "Add_new_data"):
