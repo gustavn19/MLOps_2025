@@ -180,6 +180,7 @@ cython_debug/
 *.pth
 *.pt
 data/
+wandb/
 
 # Secrets
 secrets/

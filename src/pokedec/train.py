@@ -14,10 +14,11 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
         project="pokedec_mlops",
         config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
         job_type="train",
+        name=f"train_model_num_class_{num_classes}_batch_size_{batch_size}_epochs_{epochs}_lr_{lr}",
     )
 
     # Load model
-    model = get_model('resnet50', num_classes=num_classes)
+    model = get_model(num_classes=num_classes)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
 
@@ -45,7 +46,7 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
         running_loss = 0.0
         correct = 0
         total = 0
-        for inputs, labels in tqdm(PokeData.train):
+        for inputs, labels in tqdm(train_loader):
             inputs, labels = inputs.to(device), labels.to(device)
             optimizer.zero_grad()
 
@@ -61,7 +62,7 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
             total += labels.size(0)
             correct += predicted.eq(labels).sum().item()
 
-        epoch_loss = running_loss / len(PokeData.train)
+        epoch_loss = running_loss / len(train_loader.dataset)
         epoch_acc = correct / total
         print(f"Train Loss: {epoch_loss:.4f}, Train Acc: {epoch_acc:.4f}")
         wandb.log({"train_loss": epoch_loss, "train_accuracy": epoch_acc})
@@ -73,7 +74,7 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
         val_correct = 0
         val_total = 0
         with torch.no_grad():
-            for inputs, labels in PokeData.val:
+            for inputs, labels in val_loader:
                 inputs, labels = inputs.to(device), labels.to(device)
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
@@ -83,10 +84,10 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
                 val_total += labels.size(0)
                 val_correct += predicted.eq(labels).sum().item()
 
-        val_loss /= len(PokeData.val)
+        val_loss /= len(val_loader.dataset)
         val_acc = val_correct / val_total
         print(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
-
+        wandb.log({"val_loss": val_loss, "val_accuracy": val_acc})
 
         # Step the scheduler
         scheduler.step()
@@ -102,3 +103,6 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
     )
     artifact.add_file('models/resnet50d_finetuned.pth')
     run.log_artifact(artifact)
+
+if __name__ == "__main__":
+    train_model(num_classes=1000, batch_size=32, epochs=10, lr=1e-4)
