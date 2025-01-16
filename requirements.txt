@@ -166,4 +166,5 @@ wcwidth==0.2.13
 webencodings==0.5.1
 yarg==0.1.9
 yarl==1.18.3
-zc.lockfile==3.0.post1
+pandas
+coverage
