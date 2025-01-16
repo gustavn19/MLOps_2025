@@ -29,3 +29,8 @@ select = ["I"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.2",
+]
