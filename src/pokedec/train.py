@@ -4,8 +4,8 @@ import torch.optim as optim
 from tqdm import tqdm
 import wandb
 
-from src.pokedec.data import PokeData
-from src.pokedec.model import get_model
+from pokedec.data import PokeData
+from pokedec.model import get_model
 
 
 def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None:
