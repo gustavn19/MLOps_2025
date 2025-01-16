@@ -10,17 +10,21 @@ from src.pokedec.model import get_model
 def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None:
     # Load model
     model = get_model('resnet50', num_classes=num_classes)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.to(device)
+
+    # Load data
+    poke_data = PokeData('data', batch_size=batch_size)
+    train_loader = poke_data._get_train_loader()
+    val_loader = poke_data._get_val_loader()
+    test_lodaer = poke_data._get_test_loader()
 
     # Define loss and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
 
     # Learning rate scheduler (optional)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
-
-    # Move model to device
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
 
 
     # Training loop
