@@ -2,12 +2,20 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
+import wandb
 
-from src.pokedec.data import PokeData
-from src.pokedec.model import get_model
+from pokedec.data import PokeData
+from pokedec.model import get_model
 
 
 def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None:
+    # Initialize Weights & Biases
+    run = wandb.init(
+        project="pokedec_mlops",
+        config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
+        job_type="train",
+    )
+
     # Load model
     model = get_model('resnet50', num_classes=num_classes)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -56,6 +64,7 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
         epoch_loss = running_loss / len(PokeData.train)
         epoch_acc = correct / total
         print(f"Train Loss: {epoch_loss:.4f}, Train Acc: {epoch_acc:.4f}")
+        wandb.log({"train_loss": epoch_loss, "train_accuracy": epoch_acc})
 
 
         # Validation phase
@@ -85,4 +94,11 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
     print("Finished Training")
 
     # Save the model
-    torch.save(model.state_dict(), 'resnet50d_finetuned.pth')
+    torch.save(model.state_dict(), 'models/resnet50d_finetuned.pth')
+    artifact = wandb.Artifact(
+        name="pokedec_model",
+        type="model",
+        description="Model trained to classfiy Pokemon",
+    )
+    artifact.add_file('models/resnet50d_finetuned.pth')
+    run.log_artifact(artifact)
