@@ -57,6 +57,14 @@ def evaluate(model_version: int):
 
 
 def predict(model_version: int, image: str):
+    """
+    Predict the class of a given image using a trained model.
+    Parameters:
+    model_version (int): The version of the model to use for prediction.
+    image (str): The path to the image file to be classified.
+    Returns:
+    tuple: A tuple containing the raw output from the model and the predicted label.
+    """
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = load_model(model_version).to(device)
 
