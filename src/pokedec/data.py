@@ -117,7 +117,7 @@ class PokeData(Dataset):
 
     def _get_train_loader(self) -> DataLoader:
         """Return a DataLoader for the training set."""
-        train: torch.Tensor = torch.load(f"{self.train_path}/train.pt", weights_only=True)
+        train: torch.Tensor = torch.load(os.path.join(self.train_path, "train.pt"), weights_only=True)
         train_img = train['images']
         train_labels = train['labels']
         train_dataset = TensorDataset(train_img, train_labels)
@@ -125,7 +125,7 @@ class PokeData(Dataset):
 
     def _get_val_loader(self) -> DataLoader:
         """Return a DataLoader for the validation set."""
-        val: torch.Tensor = torch.load(f"{self.val_path}/val.pt", weights_only=True)
+        val: torch.Tensor = torch.load(os.path.join(self.val_path, "val.pt"), weights_only=True)
         val_img = val['images']
         val_labels = val['labels']
         val_dataset = TensorDataset(val_img, val_labels)
@@ -133,7 +133,7 @@ class PokeData(Dataset):
 
     def _get_test_loader(self) -> DataLoader:
         """Return a DataLoader for the test set."""
-        test: torch.Tensor = torch.load(f"{self.test_path}/test.pt", weights_only=True)
+        test: torch.Tensor = torch.load(os.path.join(self.test_path, "test.pt"), weights_only=True)
         test_img = test['images']
         test_labels = test['labels']
         test_dataset = TensorDataset(test_img, test_labels)

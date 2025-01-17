@@ -1,43 +1,43 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tqdm import tqdm
 import wandb
+from model import get_model
+from tqdm import tqdm
 
-from pokedec.data import PokeData
-from pokedec.model import get_model
+from data import PokeData
 
 
-def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None:
+def train_model(num_classes: int, batch_size: int, num_epochs: int, lr: int) -> None:
     # Initialize Weights & Biases
     run = wandb.init(
         project="pokedec_mlops",
-        config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
+        config={"lr": lr, "batch_size": batch_size, "epochs": num_epochs},
         job_type="train",
-        name=f"train_model_num_class_{num_classes}_batch_size_{batch_size}_epochs_{epochs}_lr_{lr}",
+        name=f"train_model_num_class_{num_classes}_batch_size_{batch_size}_epochs_{num_epochs}_lr_{lr}",
     )
 
     # Load model
     model = get_model(num_classes=num_classes)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f"Using device: {device}")
     model = model.to(device)
 
     # Load data
-    poke_data = PokeData('data', batch_size=batch_size)
+    poke_data = PokeData(data_path='data', batch_size=batch_size)
     train_loader = poke_data._get_train_loader()
     val_loader = poke_data._get_val_loader()
     test_lodaer = poke_data._get_test_loader()
 
     # Define loss and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
+    optimizer = optim.AdamW(model.parameters(), lr=lr)#, weight_decay=1e-4)
 
     # Learning rate scheduler (optional)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
+    #scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
 
 
     # Training loop
-    num_epochs = epochs
     for epoch in range(num_epochs):
         print(f"Epoch {epoch+1}/{num_epochs}")
 
@@ -90,7 +90,7 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
         wandb.log({"val_loss": val_loss, "val_accuracy": val_acc})
 
         # Step the scheduler
-        scheduler.step()
+        #scheduler.step()
     
     print("Finished Training")
 
@@ -105,4 +105,4 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
     run.log_artifact(artifact)
 
 if __name__ == "__main__":
-    train_model(num_classes=1000, batch_size=32, epochs=10, lr=1e-4)
+    train_model(num_classes=1000, batch_size=32, num_epochs=10, lr=1e-4)
