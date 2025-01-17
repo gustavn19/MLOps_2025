@@ -114,6 +114,11 @@ class PokeData(Dataset):
         """Return the list of unique labels from a CSV file."""
         df = pd.read_csv(os.path.join(self.data_path, "raw", "metadata.csv"))
         return len(df["label"].unique().tolist())
+    
+    def _get_labels(self) -> list[str | None]:
+        """Return the list of unique labels from a CSV file."""
+        df = pd.read_csv(os.path.join(self.data_path, "raw", "metadata.csv"))
+        return df["label"].unique().tolist()
 
     def _get_train_loader(self) -> DataLoader:
         """Return a DataLoader for the training set."""
