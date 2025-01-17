@@ -7,13 +7,21 @@ metric:
     goal: minimize
     name: val_loss
 parameters:
+    num-classes:
+        values: [1000]
     lr:
         distribution: log_uniform_values
         min: 0.00001
         max: 0.1
-    num_epochs:
+    num-epochs:
         values: [50, 75, 100]
-run_cap: 100
+    batch-size:
+        values: [32, 64, 128]
+    wd:
+        distribution: uniform
+        min: 0.00001
+        max: 0.1
+run_cap: 20
 command:
   - ${env}
   - C:\Users\Damsgaard\Documents\Github\MLOps_2025\.venv\Scripts\python.exe

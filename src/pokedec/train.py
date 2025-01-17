@@ -9,7 +9,7 @@ import wandb
 from data import PokeData
 
 
-def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int = 100, lr: int = 1e-4, wd: int = 1e-4) -> None:
+def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int = 100, lr: float = 1e-4, wd: float = 1e-4) -> None:
     # Initialize Weights & Biases
     run = wandb.init(
         project="pokedec_mlops",
@@ -107,4 +107,4 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     wandb.finish()
 
 if __name__ == "__main__":
-    typer.run(train_model())
+    typer.run(train_model)
