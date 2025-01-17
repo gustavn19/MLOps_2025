@@ -1312,6 +1312,7 @@ dependencies = [
     { name = "pytest" },
     { name = "timm" },
     { name = "torch" },
+    { name = "typer" },
 ]
 
 [package.dev-dependencies]
@@ -1332,6 +1333,7 @@ requires-dist = [
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "timm", specifier = ">=1.0.13" },
     { name = "torch", specifier = ">=2.5.1" },
+    { name = "typer", specifier = ">=0.15.1" },
 ]
 
 [package.metadata.requires-dev]
