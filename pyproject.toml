@@ -32,10 +32,7 @@ line-length = 120
 select = ["I"]
 
 [tool.coverage.run]
-omit = ["tests/*"]
-omit = ["*/_remote_module_non_scriptable.py"]
-
-[tool.coverage.run]
+omit = ["tests/*", "*/_remote_module_non_scriptable.py"]
 branch = true
 source = ["pokedec"]
 
