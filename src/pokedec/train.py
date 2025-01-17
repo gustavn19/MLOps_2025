@@ -1,3 +1,5 @@
+import os
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -12,11 +14,11 @@ from data import PokeData
 def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int = 100, lr: float = 1e-4, wd: float = 1e-4) -> None:
     # Initialize Weights & Biases
     run = wandb.init(
-        project="pokedec_mlops",
+        project="pokedec_train",
         entity="pokedec_mlops",
         config={"lr": lr, "batch_size": batch_size, "epochs": num_epochs},
         job_type="train",
-        name=f"train_model_num_class_{num_classes}_batch_size_{batch_size}_epochs_{num_epochs}_lr_{lr}",
+        name=f"pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}",
     )
 
     # Load model
@@ -96,13 +98,14 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     print("Finished Training")
 
     # Save the model
-    torch.save(model.state_dict(), 'models/resnet50d_finetuned.pth')
+    os.makedirs("models/sweep", exist_ok=True)
+    torch.save(model.state_dict(), f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
     artifact = wandb.Artifact(
-        name="pokedec_model",
+        name=f"pokedec_models",
         type="model",
-        description="Model trained to classfiy Pokemon",
+        description="Model trained to classfiy Pokemon during sweep",
     )
-    artifact.add_file('models/resnet50d_finetuned.pth')
+    artifact.add_file(f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
     run.log_artifact(artifact)
     wandb.finish()
 

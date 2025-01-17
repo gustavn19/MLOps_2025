@@ -1,6 +1,6 @@
 program: src/pokedec/train.py
 name: pokesweep
-project: pokedec_mlops
+project: pokedec_train
 entity: pokedec_mlops
 method: bayes  # or 'grid' or 'random'
 metric:
@@ -11,15 +11,15 @@ parameters:
         values: [1000]
     lr:
         distribution: log_uniform_values
-        min: 0.00001
+        min: 0.0001
         max: 0.1
     num-epochs:
-        values: [50, 75, 100]
+        values: [20, 35, 50]
     batch-size:
-        values: [32, 64, 128]
+        values: [32, 64]
     wd:
         distribution: uniform
-        min: 0.00001
+        min: 0.0001
         max: 0.1
 run_cap: 20
 command:
