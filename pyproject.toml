@@ -20,6 +20,7 @@ dependencies = [
     "loguru>=0.7.3",
     "numpy>=2.2.1",
     "pandas>=2.2.3",
+    "pytest>=8.3.4",
     "timm>=1.0.13",
     "torch>=2.5.1",
 ]
