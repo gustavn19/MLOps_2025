@@ -12,6 +12,7 @@ def train_model(num_classes: int, batch_size: int, epochs: int, lr: int) -> None
     # Initialize Weights & Biases
     run = wandb.init(
         project="pokedec_mlops",
+        entity="pokedec_mlops",
         config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
         job_type="train",
         name=f"train_model_num_class_{num_classes}_batch_size_{batch_size}_epochs_{epochs}_lr_{lr}",
