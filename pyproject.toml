@@ -33,6 +33,15 @@ select = ["I"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
+omit = ["*/_remote_module_non_scriptable.py"]
+
+[tool.coverage.run]
+branch = true
+source = ["pokedec"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
 
 [tool.pytest.ini_options]
 pythonpath = [
