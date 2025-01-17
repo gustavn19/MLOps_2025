@@ -1,14 +1,15 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import wandb
+import typer
 from model import get_model
 from tqdm import tqdm
 
+import wandb
 from data import PokeData
 
 
-def train_model(num_classes: int, batch_size: int, num_epochs: int, lr: int) -> None:
+def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int = 100, lr: int = 1e-4, wd: int = 1e-4) -> None:
     # Initialize Weights & Biases
     run = wandb.init(
         project="pokedec_mlops",
@@ -28,14 +29,13 @@ def train_model(num_classes: int, batch_size: int, num_epochs: int, lr: int) -> 
     poke_data = PokeData(data_path='data', batch_size=batch_size)
     train_loader = poke_data._get_train_loader()
     val_loader = poke_data._get_val_loader()
-    test_lodaer = poke_data._get_test_loader()
 
     # Define loss and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(model.parameters(), lr=lr)#, weight_decay=1e-4)
+    optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=wd)
 
     # Learning rate scheduler (optional)
-    #scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
 
 
     # Training loop
@@ -66,7 +66,6 @@ def train_model(num_classes: int, batch_size: int, num_epochs: int, lr: int) -> 
         epoch_loss = running_loss / len(train_loader.dataset)
         epoch_acc = correct / total
         print(f"Train Loss: {epoch_loss:.4f}, Train Acc: {epoch_acc:.4f}")
-        wandb.log({"train_loss": epoch_loss, "train_accuracy": epoch_acc})
 
 
         # Validation phase
@@ -88,10 +87,11 @@ def train_model(num_classes: int, batch_size: int, num_epochs: int, lr: int) -> 
         val_loss /= len(val_loader.dataset)
         val_acc = val_correct / val_total
         print(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
-        wandb.log({"val_loss": val_loss, "val_accuracy": val_acc})
+        
+        wandb.log({"train_loss": epoch_loss, "train_accuracy": epoch_acc, "val_loss": val_loss, "val_accuracy": val_acc})
 
         # Step the scheduler
-        #scheduler.step()
+        scheduler.step()
     
     print("Finished Training")
 
@@ -104,6 +104,7 @@ def train_model(num_classes: int, batch_size: int, num_epochs: int, lr: int) -> 
     )
     artifact.add_file('models/resnet50d_finetuned.pth')
     run.log_artifact(artifact)
+    wandb.finish()
 
 if __name__ == "__main__":
-    train_model(num_classes=1000, batch_size=32, num_epochs=10, lr=1e-4)
+    typer.run(train_model())

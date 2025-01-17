@@ -1,0 +1,28 @@
+program: src/pokedec/train.py
+name: pokesweep
+project: pokedec_mlops
+entity: pokedec_mlops
+method: bayes  # or 'grid' or 'random'
+metric:
+    goal: minimize
+    name: val_loss
+parameters:
+    lr:
+        distribution: log_uniform_values
+        min: 0.00001
+        max: 0.1
+    num_epochs:
+        values: [50, 75, 100]
+run_cap: 100
+command:
+  - ${env}
+  - C:\Users\Damsgaard\Documents\Github\MLOps_2025\.venv\Scripts\python.exe
+  - ${program}
+  - ${args}
+
+# To run in command-line:
+# - First create sweep:
+#     wandb sweep configs/sweep.yaml
+# - Next run the agent (remember to give full path):
+#     wandb agent entity/project/sweep_id
+#     fx: pokedec_mlops/pokedec_mlops/imdqzsdv

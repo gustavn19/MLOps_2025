@@ -121,7 +121,7 @@ class PokeData(Dataset):
         train_img = train['images']
         train_labels = train['labels']
         train_dataset = TensorDataset(train_img, train_labels)
-        return DataLoader(train_dataset, batch_size=self.batch_size)
+        return DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
 
     def _get_val_loader(self) -> DataLoader:
         """Return a DataLoader for the validation set."""
@@ -129,7 +129,7 @@ class PokeData(Dataset):
         val_img = val['images']
         val_labels = val['labels']
         val_dataset = TensorDataset(val_img, val_labels)
-        return DataLoader(val_dataset, batch_size=self.batch_size)
+        return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=True)
 
     def _get_test_loader(self) -> DataLoader:
         """Return a DataLoader for the test set."""
@@ -137,7 +137,7 @@ class PokeData(Dataset):
         test_img = test['images']
         test_labels = test['labels']
         test_dataset = TensorDataset(test_img, test_labels)
-        return DataLoader(test_dataset, batch_size=self.batch_size)
+        return DataLoader(test_dataset, batch_size=self.batch_size, shuffle=True)
 
 
 if __name__ == "__main__":
