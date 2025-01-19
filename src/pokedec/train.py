@@ -12,6 +12,20 @@ from data import PokeData
 
 
 def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int = 100, lr: float = 1e-4, wd: float = 1e-4) -> None:
+    '''
+    Trains a model to classify Pokemon using the specified hyperparameters.
+
+    Args:
+        num_classes (int): The number of output classes for the classifier.
+        batch_size (int): The number of samples in each batch.
+        num_epochs (int): The number of epochs to train the model.
+        lr (float): The learning rate for the optimizer.
+        wd (float): The weight decay for the optimizer.
+    
+    Returns:
+        None: The function performs training, validation, and artifact logging but does not return any value.
+    '''
+
     # Initialize Weights & Biases
     run = wandb.init(
         project="pokedec_train",
