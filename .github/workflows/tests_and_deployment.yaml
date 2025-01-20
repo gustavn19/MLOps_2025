@@ -34,8 +34,52 @@ jobs:
           uv sync
           uv pip list
 
+      - name: Set credentials path
+        shell: bash
+        run: |
+          echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
+
+      - name: Get data
+        working-directory: MLOPS_2025
+        shell: bash
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS_DATA }}
+        run: |
+          echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
+          dvc remote add -d my_remote gs://dtu_mlops_osquera
+          dvc remote modify my_remote  credentialpath "$CREDENTIALS_PATH"
+          dvc pull -r my_remote
+
 
       - name: Run tests & coverage
         run: |
           uv run coverage run -m pytest tests/
           uv run coverage report -m
+
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set credentials path
+        shell: bash
+        run: |
+          echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Submit build
+        working-directory: MLOPS_2025
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS_REGISTRY }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
+          gcloud auth activate-service-account --key-file="$CREDENTIALS_PATH"
+          gcloud config set project $PROJECT_ID
+          gcloud builds submit --config cloudbuild_backend.yaml
+          gcloud builds submit --config cloudbuild_frontend.yaml

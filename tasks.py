@@ -34,7 +34,6 @@ def push_all(ctx, message):
     ctx.run("git push")
 
 
-
 @task
 def dvc(ctx, folder: str = "data", message: str = "Add_new_data"):
     ctx.run(f"dvc add {folder}")
@@ -64,7 +63,7 @@ def create_environment(ctx: Context) -> None:
         pty=not WINDOWS,
     )
 
-
+# TODO: Change the task so it works with uv manager
 @task
 def requirements(ctx: Context) -> None:
     """Install project requirements."""
@@ -84,7 +83,7 @@ def dev_requirements(ctx: Context) -> None:
 def preprocess_data(ctx: Context) -> None:
     """Preprocess data."""
     ctx.run(
-        f"python src/{PROJECT_NAME}/data.py data/raw data/processed",
+        f"python src/{PROJECT_NAME}/data.py --raw-data-path data/raw/dataset --output-folder data/processed",
         echo=True,
         pty=not WINDOWS,
     )
