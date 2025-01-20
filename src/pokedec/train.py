@@ -140,7 +140,7 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     torch.onnx.export(
         model,
         img,
-        "models/model.onnx",
+        "data/models/model.onnx",
         input_names=["input"],
         output_names=["output"],
         opset_version=11,
