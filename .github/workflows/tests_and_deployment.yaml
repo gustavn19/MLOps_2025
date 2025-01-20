@@ -50,8 +50,8 @@ jobs:
 
       - name: Run tests & coverage
         run: |
-          uv run coverage run -m pytest tests/
-          uv run coverage report -m
+          coverage run -m pytest tests/
+          coverage report -m
 
   build:
     runs-on: ubuntu-latest
