@@ -1,4 +1,5 @@
 import os
+import logging
 
 import torch
 import torch.nn as nn
@@ -9,6 +10,14 @@ from tqdm import tqdm
 
 import wandb
 from data import PokeData
+
+logger = logging.getLogger(__name__)
+
+DEVICE = torch.device(
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available() else "cpu"
+)
 
 
 def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int = 100, lr: float = 1e-4, wd: float = 1e-4) -> None:
@@ -38,7 +47,7 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     # Load model
     model = get_model(num_classes=num_classes)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"Using device: {device}")
+    logger.info(f"Using device: {device}")
     model = model.to(device)
 
     # Load data
@@ -53,10 +62,9 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     # Learning rate scheduler (optional)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
 
-
     # Training loop
     for epoch in range(num_epochs):
-        print(f"Epoch {epoch+1}/{num_epochs}")
+        logger.info(f"Epoch {epoch+1}/{num_epochs}")
 
         # Training phase
         model.train()
@@ -81,8 +89,7 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
 
         epoch_loss = running_loss / len(train_loader.dataset)
         epoch_acc = correct / total
-        print(f"Train Loss: {epoch_loss:.4f}, Train Acc: {epoch_acc:.4f}")
-
+        logger.info(f"Train Loss: {epoch_loss:.4f}, Train Acc: {epoch_acc:.4f}")
 
         # Validation phase
         model.eval()
@@ -102,14 +109,14 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
 
         val_loss /= len(val_loader.dataset)
         val_acc = val_correct / val_total
-        print(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
-        
+        logger.info(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
+
         wandb.log({"train_loss": epoch_loss, "train_accuracy": epoch_acc, "val_loss": val_loss, "val_accuracy": val_acc})
 
         # Step the scheduler
         scheduler.step()
-    
-    print("Finished Training")
+
+    logger.info("Finished Training")
 
     # Save the model
     os.makedirs("models/sweep", exist_ok=True)
@@ -122,6 +129,21 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     artifact.add_file(f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
     run.log_artifact(artifact)
     wandb.finish()
+
+    model.eval()
+    img, target = next(iter(val_loader))
+    img, target = img.to(DEVICE), target.to(DEVICE)
+    # Choose the first image in the batch
+    img = img[0].unsqueeze(0)
+
+    torch.onnx.export(
+        model,
+        img,
+        "models/model.onnx",
+        input_names=["input"],
+        output_names=["output"],
+        opset_version=11,
+    )
 
 if __name__ == "__main__":
     typer.run(train_model)
