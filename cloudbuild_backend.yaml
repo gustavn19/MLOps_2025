@@ -1,0 +1,35 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Build container image for backend'
+  args: [
+    'build',
+    '-t',
+    'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/backend_pokedec:latests
+',
+    '-f',
+    'dockerfiles/backend.dockerfile',
+    '.'
+  ]
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Push container image for backend'
+  args: [
+    'push',
+    'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/backend_pokedec:latests
+'
+  ]
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'Deploy to Cloud Run'
+  args: [
+    'run',
+    'deploy',
+    'backend',
+    '--image',
+    'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/backend_pokedec:latests
+',
+    '--region',
+    'europe-west3',
+    '--platform',
+    'managed',
+  ]
+options:
+  logging: CLOUD_LOGGING_ONLY

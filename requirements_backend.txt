@@ -1,0 +1,5 @@
+fastapi[standard]
+Pillow
+uvicorn
+numpy
+onnxruntime
