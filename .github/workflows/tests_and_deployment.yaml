@@ -77,7 +77,6 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS_REGISTRY }}
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GCP_REGISTRY: ${{ secrets.GCP_REGISTRY }}
         run: |
           echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
           gcloud auth activate-service-account --key-file="$CREDENTIALS_PATH"
