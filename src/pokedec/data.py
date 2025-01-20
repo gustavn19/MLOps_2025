@@ -80,7 +80,7 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
                 # Add to dataset
                 datasets[split_name].append(img_tensor)
                 labels[split_name].append(class_idx)
-                
+         
     # Save each split as a single .pt file
     for split_name in datasets.keys():
         images_tensor = torch.stack(datasets[split_name])  # Shape: [N, C, H, W]
@@ -92,12 +92,13 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
 class PokeData(Dataset):
     """A PyTorch Dataset for the Pokemon dataset."""
 
-    def __init__(self, data_path: Path, batch_size: int = 32) -> None:
+    def __init__(self, data_path: Path, batch_size: int = 32, num_workers: int = 4) -> None:
         self.data_path = data_path
         self.train_path = os.path.join(data_path, "processed")
         self.val_path = os.path.join(data_path, "processed")
         self.test_path = os.path.join(data_path, "processed")
         self.batch_size = batch_size
+        self.num_workers = num_workers
 
     def __len__(self) -> int:
         """Return the length of the dataset."""
@@ -126,7 +127,7 @@ class PokeData(Dataset):
         train_img = train['images']
         train_labels = train['labels']
         train_dataset = TensorDataset(train_img, train_labels)
-        return DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
+        return DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True)
 
     def _get_val_loader(self) -> DataLoader:
         """Return a DataLoader for the validation set."""
@@ -134,7 +135,7 @@ class PokeData(Dataset):
         val_img = val['images']
         val_labels = val['labels']
         val_dataset = TensorDataset(val_img, val_labels)
-        return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=True)
+        return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True)
 
     def _get_test_loader(self) -> DataLoader:
         """Return a DataLoader for the test set."""
@@ -142,7 +143,7 @@ class PokeData(Dataset):
         test_img = test['images']
         test_labels = test['labels']
         test_dataset = TensorDataset(test_img, test_labels)
-        return DataLoader(test_dataset, batch_size=self.batch_size, shuffle=True)
+        return DataLoader(test_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True)
 
 
 if __name__ == "__main__":
