@@ -23,7 +23,6 @@ jobs:
         cache-dependency-path: setup.py
 
     - name: Install dependencies
-      working-directory: my_project
       run: |
         python -m pip install -U pip setuptools wheel
         pip install -r requirements.txt
@@ -35,7 +34,6 @@ jobs:
         echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
 
     - name: Get data
-      working-directory: my_project
       shell: bash
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS_DATA }}
@@ -51,12 +49,10 @@ jobs:
         dvc pull --no-run-cache
 
     - name: Check data statistics
-      working-directory: my_project
       run: |
         python src/my_project/dataset_statistics.py
 
     - name: Check data statistics & generate report
-      working-directory: my_project
       run: |
         python src/my_project/dataset_statistics.py > ../data_statistics.md
         echo '![](./pokemon_examples.png "Pokemon images")' >> ../data_statistics.md
@@ -67,7 +63,6 @@ jobs:
       uses: iterative/setup-cml@v2
 
     - name: Comment on PR
-      working-directory: my_project
       env:
         REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
