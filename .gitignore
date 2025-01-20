@@ -181,6 +181,7 @@ cython_debug/
 *.pt
 data/
 wandb/
+profiler/
 
 # Secrets
 secrets/
