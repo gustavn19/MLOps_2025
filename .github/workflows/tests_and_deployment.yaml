@@ -30,9 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install -U pip setuptools wheel
-          pip install uv
-          uv sync
-          uv pip list
+          pip install -r requirements.txt
 
       - name: Set credentials path
         shell: bash
@@ -40,21 +38,20 @@ jobs:
           echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
 
       - name: Get data
-        working-directory: MLOPS_2025
         shell: bash
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS_DATA }}
         run: |
           echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
-          dvc remote add -d my_remote gs://dtu_mlops_osquera
+          dvc remote add -d my_remote gs://poke_store
           dvc remote modify my_remote  credentialpath "$CREDENTIALS_PATH"
           dvc pull -r my_remote
 
 
       - name: Run tests & coverage
         run: |
-          uv run coverage run -m pytest tests/
-          uv run coverage report -m
+          coverage run -m pytest tests/
+          coverage report -m
 
   build:
     runs-on: ubuntu-latest
@@ -73,7 +70,6 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Submit build
-        working-directory: MLOPS_2025
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS_REGISTRY }}
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}

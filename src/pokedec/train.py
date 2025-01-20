@@ -206,6 +206,5 @@ def train_model(num_classes: int = 1000,
             opset_version=11,
         )
 
-
 if __name__ == "__main__":
     typer.run(train_model)

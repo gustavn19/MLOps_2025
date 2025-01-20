@@ -14,7 +14,7 @@ async def lifespan(app: FastAPI):
     global model, transform, imagenet_classes
     # Load the ONNX model
     model = onnxruntime.InferenceSession(
-        os.path.join(os.getcwd(), "models", "model.onnx")
+        os.path.join(os.getcwd(),"data", "models", "model_best.onnx")
     )
 
     yield

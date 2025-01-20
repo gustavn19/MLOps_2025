@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY requirements_backend.txt /app/requirements_backend.txt
 COPY src/my_project/backend.py /app/backend.py
-COPY models/model.onnx models/model.onnx
+COPY models/model_best.onnx models/model_best.onnx
 
 RUN pip install -r requirements_backend.txt --no-cache-dir
 RUN pip install pydantic
