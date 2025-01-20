@@ -92,8 +92,8 @@ def preprocess_data(ctx: Context) -> None:
 
 @task
 def train(ctx: Context) -> None:
-    """Train model."""
-    ctx.run(f"python src/{PROJECT_NAME}/train.py", echo=True, pty=not WINDOWS)
+    """Train model with best config from sweep."""
+    ctx.run(f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 64 --num-epochs 50 --lr 0.002598303563236388 --wd 0.058812577376538534", echo=True, pty=not WINDOWS)
 
 
 @task

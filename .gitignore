@@ -179,6 +179,7 @@ cython_debug/
 # Data and models
 *.pth
 *.pt
+*.onnx
 data/
 wandb/
 

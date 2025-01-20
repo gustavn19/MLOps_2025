@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 import torch
 import torch.nn as nn
@@ -63,7 +63,7 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
 
     # Training loop
-    for epoch in range(num_epochs):
+    for epoch in tqdm(range(num_epochs)):
         logger.info(f"Epoch {epoch+1}/{num_epochs}")
 
         # Training phase
@@ -71,7 +71,7 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
         running_loss = 0.0
         correct = 0
         total = 0
-        for inputs, labels in tqdm(train_loader):
+        for inputs, labels in train_loader:
             inputs, labels = inputs.to(device), labels.to(device)
             optimizer.zero_grad()
 
@@ -119,14 +119,15 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     logger.info("Finished Training")
 
     # Save the model
-    os.makedirs("models/sweep", exist_ok=True)
-    torch.save(model.state_dict(), f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
+    #os.makedirs("models/sweep", exist_ok=True)
+    #torch.save(model.state_dict(), f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
+    torch.save(model.state_dict(), f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
     artifact = wandb.Artifact(
-        name=f"pokedec_models",
+        name=f"pokedec_models_best",
         type="model",
         description="Model trained to classfiy Pokemon during sweep",
     )
-    artifact.add_file(f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
+    artifact.add_file(f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
     run.log_artifact(artifact)
     wandb.finish()
 
@@ -139,7 +140,7 @@ def train_model(num_classes: int = 1000, batch_size: int = 32, num_epochs: int =
     torch.onnx.export(
         model,
         img,
-        "models/model.onnx",
+        "models/model_best.onnx",
         input_names=["input"],
         output_names=["output"],
         opset_version=11,
