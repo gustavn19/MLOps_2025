@@ -30,9 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install -U pip setuptools wheel
-          pip install uv
-          uv sync
-          uv pip list
+          pip install -r requirements.txt
 
       - name: Set credentials path
         shell: bash
