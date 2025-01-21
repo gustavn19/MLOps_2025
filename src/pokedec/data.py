@@ -70,6 +70,8 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
         }
 
         # Process each split
+        # TODO: Augment the training set, e.g. by flipping images horizontally \
+        # or adding random noise, leaving validation and test sets unchanged
         for split_name, split_images in splits.items():
             for image_name in split_images:
                 # Transform image
@@ -80,6 +82,7 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
                 # Add to dataset
                 datasets[split_name].append(img_tensor)
                 labels[split_name].append(class_idx)
+
          
     # Save each split as a single .pt file
     for split_name in datasets.keys():
