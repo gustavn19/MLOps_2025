@@ -71,6 +71,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install dvc
+          pip install dvc-gs
 
       - name: Set credentials path
         shell: bash
