@@ -76,8 +76,8 @@ jobs:
         shell: bash
         run: |
           echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
-
-      - name: Get data and model data
+      
+      - name: Get data and model data # TODO: Create a second dvc bucket for the model so the data and model can be pulled separately
         shell: bash
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS_DATA }}
