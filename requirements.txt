@@ -144,3 +144,4 @@ websockets
 Werkzeug
 wheel
 bentoml
+timm
