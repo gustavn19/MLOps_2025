@@ -2,8 +2,9 @@
 name = "pokedec"
 version = "0.0.1"
 description = "This package can detect pokemon types based on images."
+# TODO: Add the other authors
 authors = [
-  { name = "antonmosquerastorgaard@gmail.com", email = "your@email.com" },
+  { name = "Osquera", email = "antonmosquerastorgaard@gmail.com" },
 ]
 license = { file = "LICENSE" }
 keywords = ["machine learning", "MLOps"]
@@ -45,6 +46,7 @@ pythonpath = [
   ".", "src",
 ]
 
+# TODO: Create dependencies for all workflows and dockerfiles and cloudbuilds
 [dependency-groups]
 dev = [
     "ruff>=0.9.2",
