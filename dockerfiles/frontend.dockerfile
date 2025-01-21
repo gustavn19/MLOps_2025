@@ -9,7 +9,7 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY requirements_frontend.txt /app/requirements_frontend.txt
-COPY src/my_project/frontend.py /app/frontend.py
+COPY src/pokedec/frontend.py /app/frontend.py
 COPY pokemon_labels.json /app/pokemon_labels.json
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements_frontend.txt
