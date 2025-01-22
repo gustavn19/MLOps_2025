@@ -96,7 +96,7 @@ def split_data_and_preprocess(
 class PokeData(Dataset):
     """A PyTorch Dataset for the Pokemon dataset."""
 
-    def __init__(self, data_path: Path, batch_size: int = 32, num_workers: int = 4) -> None:
+    def __init__(self, data_path: Path, batch_size: int = 32, num_workers: int = 1) -> None:
         self.data_path = data_path
         self.train_path = os.path.join(data_path, "processed")
         self.val_path = os.path.join(data_path, "processed")
