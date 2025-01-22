@@ -37,7 +37,7 @@ def predict_image(image_path: str) -> str:
     Returns:
     - str: The prediction result.
     """
-    
+
     img = Image.open(image_path).resize((128, 128)).convert("RGB")
     np_img = np.array(img, dtype=np.float32)
     np_img = np_img.transpose((2, 0, 1))  # Shape (128, 128, 3) -> (3, 128, 128)
