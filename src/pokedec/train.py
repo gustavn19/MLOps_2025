@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 
 import torch
 import torch.nn as nn
@@ -26,7 +27,7 @@ def train_model(num_classes: int = 1000,
                 num_epochs: int = 100,
                 lr: float = 1e-4,
                 wd: float = 1e-4,
-                use_wandb: bool = False,
+                use_wandb: bool = True,
                 profiling: bool = False,
                 export_model: bool = False
                 ) -> None:
@@ -52,10 +53,13 @@ def train_model(num_classes: int = 1000,
         run = wandb.init(
             project="pokedec_train",
             entity="pokedec_mlops",
-            config={"lr": lr, "batch_size": batch_size, "epochs": num_epochs},
+            config={"lr": lr, "batch_size": batch_size, "epochs": num_epochs, "wd": wd, "num_classes": num_classes, "seed": 42},
             job_type="train",
             name=f"pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}",
         )
+
+        random.seed(wandb.config.seed)
+        torch.manual_seed(wandb.config.seed)
 
     # Load model
     model = get_model(num_classes=num_classes)
@@ -177,7 +181,7 @@ def train_model(num_classes: int = 1000,
 
         # Single model
         torch.save(model.state_dict(), f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
-        
+
         artifact = wandb.Artifact(
             name=f"pokedec_models_best",
             type="model",
@@ -185,7 +189,7 @@ def train_model(num_classes: int = 1000,
         )
         artifact.add_file(f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
         run.log_artifact(artifact)
-        
+
         wandb.finish()
 
     # Export model to ONNX format
