@@ -3,6 +3,7 @@ import torch
 
 from src.pokedec.model import get_model
 
+
 def test_model():
     num_classes = 1000
     model = get_model(num_classes=num_classes)
@@ -12,6 +13,7 @@ def test_model():
         1,
         num_classes,
     ), f"Ecxpected output shape (1, {num_classes}), but got {y.shape}"
+
 
 @pytest.mark.parametrize("batch_size", [1, 16, 32])
 def test_model_batch_size(batch_size):
@@ -23,6 +25,7 @@ def test_model_batch_size(batch_size):
         batch_size,
         num_classes,
     ), f"Expected output shape ({batch_size}, {num_classes}), but got {y.shape}"
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

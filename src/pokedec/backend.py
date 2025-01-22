@@ -13,9 +13,7 @@ async def lifespan(app: FastAPI):
     """Context manager to start and stop the lifespan events of the FastAPI application."""
     global model, transform, imagenet_classes
     # Load the ONNX model
-    model = onnxruntime.InferenceSession(
-        os.path.join(os.getcwd(), "models", "model_best.onnx")
-    )
+    model = onnxruntime.InferenceSession(os.path.join(os.getcwd(), "models", "model_best.onnx"))
 
     yield
 

@@ -163,7 +163,7 @@ We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/hu
 >
 > Answer:
 
-We have used UV for managing our dependences. This list is contained in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can start by creating a virtuel environment by running *uv venv* and then download all relevant dependencies regardless of operating system with *uv sync*. 
+We have used UV for managing our dependences. This list is contained in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can start by creating a virtuel environment by running *uv venv* and then download all relevant dependencies regardless of operating system with *uv sync*.
 
 ### Question 5
 
@@ -194,7 +194,7 @@ Using the cookiecutter template an overall structure for our repository was achi
 >
 > Answer:
 
-For 
+For
 
 ## Version control
 

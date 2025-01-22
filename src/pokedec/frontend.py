@@ -47,7 +47,7 @@ def main() -> None:
         result = classify_image(image, backend=backend)
 
         if result is not None:
-            prediction = result["prediction"] 
+            prediction = result["prediction"]
             probabilities = result["probabilities"]
 
             class_name = labels[str(prediction)]

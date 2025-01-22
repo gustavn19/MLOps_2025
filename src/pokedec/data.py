@@ -13,16 +13,18 @@ from tqdm import tqdm
 random.seed(42)
 torch.manual_seed(42)
 
-def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
-               output_folder: Path = Path("data/processed"),
-               split_ratio: tuple[float, float, float] = (1/3, 1/3, 1/3),
-               image_size: tuple[int, int] = (128, 128)
-               ) -> None:
+
+def split_data_and_preprocess(
+    raw_data_path: Path = Path("data/raw/dataset"),
+    output_folder: Path = Path("data/processed"),
+    split_ratio: tuple[float, float, float] = (1 / 3, 1 / 3, 1 / 3),
+    image_size: tuple[int, int] = (128, 128),
+) -> None:
     """
-    Splits the dataset in `raw_data_path` into train, val, and test splits, 
+    Splits the dataset in `raw_data_path` into train, val, and test splits,
     ensuring each class is equally represented, and stores them in `output_folder`.
     Before splitting the images are converted to .pt format.
-    
+
     Args:
     - raw_data_path (str): Path to the source directory containing subfolders for classes.
     - output_folder (str): Path to the destination directory for the splits.
@@ -32,16 +34,18 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
     assert sum(split_ratio) == 1, "Split ratios must sum to 1."
 
     # Define transforms
-    transform = transforms.Compose([
-        transforms.Resize(image_size),
-        transforms.ToTensor(),
-    ])
+    transform = transforms.Compose(
+        [
+            transforms.Resize(image_size),
+            transforms.ToTensor(),
+        ]
+    )
 
     # Create output directory
     os.makedirs(output_folder, exist_ok=True)
-    
-    datasets = {'train': [], 'val': [], 'test': []}
-    labels = {'train': [], 'val': [], 'test': []}
+
+    datasets = {"train": [], "val": [], "test": []}
+    labels = {"train": [], "val": [], "test": []}
     class_to_idx = {}
 
     # Assign a numerical label to each class
@@ -65,11 +69,7 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
         val_end = train_end + int(n * split_ratio[1])
 
         # Split images
-        splits = {
-            'train': images[:train_end],
-            'val': images[train_end:val_end],
-            'test': images[val_end:]
-        }
+        splits = {"train": images[:train_end], "val": images[train_end:val_end], "test": images[val_end:]}
 
         # Process each split
         # TODO: Augment the training set, e.g. by flipping images horizontally \
@@ -78,20 +78,19 @@ def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
             for image_name in split_images:
                 # Transform image
                 image_path = os.path.join(class_path, image_name)
-                img = Image.open(image_path).convert('RGB')
+                img = Image.open(image_path).convert("RGB")
                 img_tensor = transform(img)
-                    
+
                 # Add to dataset
                 datasets[split_name].append(img_tensor)
                 labels[split_name].append(class_idx)
 
-         
     # Save each split as a single .pt file
     for split_name in datasets.keys():
         images_tensor = torch.stack(datasets[split_name])  # Shape: [N, C, H, W]
-        labels_tensor = torch.tensor(labels[split_name])   # Shape: [N]
+        labels_tensor = torch.tensor(labels[split_name])  # Shape: [N]
         save_path = os.path.join(output_folder, f"{split_name}.pt")
-        torch.save({'images': images_tensor, 'labels': labels_tensor}, save_path)
+        torch.save({"images": images_tensor, "labels": labels_tensor}, save_path)
 
 
 class PokeData(Dataset):
@@ -120,7 +119,7 @@ class PokeData(Dataset):
         """Return the list of unique labels from a CSV file."""
         df = pd.read_csv(os.path.join(self.data_path, "raw", "metadata.csv"))
         return len(df["label"].unique().tolist())
-    
+
     def _get_labels(self) -> list[str | None]:
         """Return the list of unique labels from a CSV file."""
         df = pd.read_csv(os.path.join(self.data_path, "raw", "metadata.csv"))
@@ -129,26 +128,32 @@ class PokeData(Dataset):
     def _get_train_loader(self) -> DataLoader:
         """Return a DataLoader for the training set."""
         train: torch.Tensor = torch.load(os.path.join(self.train_path, "train.pt"), weights_only=True)
-        train_img = train['images']
-        train_labels = train['labels']
+        train_img = train["images"]
+        train_labels = train["labels"]
         train_dataset = TensorDataset(train_img, train_labels)
-        return DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True)
+        return DataLoader(
+            train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True
+        )
 
     def _get_val_loader(self) -> DataLoader:
         """Return a DataLoader for the validation set."""
         val: torch.Tensor = torch.load(os.path.join(self.val_path, "val.pt"), weights_only=True)
-        val_img = val['images']
-        val_labels = val['labels']
+        val_img = val["images"]
+        val_labels = val["labels"]
         val_dataset = TensorDataset(val_img, val_labels)
-        return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True)
+        return DataLoader(
+            val_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True
+        )
 
     def _get_test_loader(self) -> DataLoader:
         """Return a DataLoader for the test set."""
         test: torch.Tensor = torch.load(os.path.join(self.test_path, "test.pt"), weights_only=True)
-        test_img = test['images']
-        test_labels = test['labels']
+        test_img = test["images"]
+        test_labels = test["labels"]
         test_dataset = TensorDataset(test_img, test_labels)
-        return DataLoader(test_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True)
+        return DataLoader(
+            test_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True
+        )
 
 
 if __name__ == "__main__":
