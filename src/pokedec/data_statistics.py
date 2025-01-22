@@ -8,7 +8,11 @@ from src.pokedec.data import PokeData
 
 
 def dataset_statistics(datadir: str = os.path.join(os.getcwd(), "data", "raw")) -> None:
-    """Compute dataset statistics."""
+    """Compute dataset statistics.
+
+    Args:
+    - datadir (str): The directory containing the raw dataset.
+    """
     train_dataset = PokeData(datadir, 1)._get_train_loader()
     val_dataset = PokeData(datadir, 1)._get_val_loader()
     test_dataset = PokeData(datadir, 1)._get_test_loader()

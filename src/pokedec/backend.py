@@ -10,7 +10,14 @@ from PIL import Image
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Context manager to start and stop the lifespan events of the FastAPI application."""
+    """Context manager to start and stop the lifespan events of the FastAPI application.
+
+    Args:
+    - app (FastAPI): The FastAPI application instance.
+
+    Yields:
+    - None
+    """
     global model, transform, imagenet_classes
     # Load the ONNX model
     model = onnxruntime.InferenceSession(os.path.join(os.getcwd(), "models", "onnx", "model_best.onnx"))
@@ -22,7 +29,15 @@ app = FastAPI(lifespan=lifespan)
 
 
 def predict_image(image_path: str) -> str:
-    """Predict image class (or classes) given image path and return the result."""
+    """Predict image class (or classes) given image path and return the result.
+
+    Args:
+    - image_path (str): Path to the image file.
+
+    Returns:
+    - str: The prediction result.
+    """
+    
     img = Image.open(image_path).resize((128, 128)).convert("RGB")
     np_img = np.array(img, dtype=np.float32)
     np_img = np_img.transpose((2, 0, 1))  # Shape (128, 128, 3) -> (3, 128, 128)
