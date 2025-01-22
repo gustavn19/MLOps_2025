@@ -182,6 +182,7 @@ cython_debug/
 data/
 wandb/
 profiler/
+training_logs/
 
 # Secrets
 secrets/
