@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY requirements_backend.txt /app/requirements_backend.txt
 COPY src/pokedec/backend.py /app/backend.py
-COPY models/onnx/pokedec_model.onnx models/onnx/pokedec_model.onnx
+COPY models/onnx/model_best.onnx models/onnx/model_best.onnx
 
 RUN pip install -r requirements_backend.txt --no-cache-dir
 RUN pip install pydantic
