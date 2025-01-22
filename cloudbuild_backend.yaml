@@ -20,7 +20,7 @@ steps:
   args: [
     'run',
     'deploy',
-    'backend_pokedec',
+    'backend-pokedec',
     '--image',
     'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/backend_pokedec:latests',
     '--region',
