@@ -8,6 +8,13 @@ on:
     - '**/*.dvc'
     - '.dvc/**'
 
+  push:
+    branches:
+    - main
+    paths:
+    - '**/*.dvc'
+    - '.dvc/**'
+
 jobs:
   run_data_checker:
     runs-on: ubuntu-latest
