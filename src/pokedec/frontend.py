@@ -38,7 +38,7 @@ def main() -> None:
 
     labels = json.load(open("pokemon_labels.json"))
     # reverse the prediction to get the class name
-    labels = {value: key for key, value in labels['pokemon_labels'].items()}
+    labels = {value: key for key, value in labels["pokemon_labels"].items()}
 
     st.title("Image Classification")
 
@@ -51,7 +51,6 @@ def main() -> None:
         if result is not None:
             prediction = result["prediction"]
             probabilities = result["probabilities"]
-
 
             class_name = labels[int(prediction)]
 
