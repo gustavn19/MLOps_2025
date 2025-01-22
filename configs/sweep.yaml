@@ -14,7 +14,7 @@ parameters:
         min: 0.0001
         max: 0.1
     num-epochs:
-        values: [15, 30, 45]
+        values: [5, 10, 15, 20]
     batch-size:
         values: [32, 64]
     wd:
