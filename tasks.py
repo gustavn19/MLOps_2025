@@ -50,7 +50,7 @@ def pull_data(ctx):
 
 @task
 def pull_model(ctx):
-    ctx.run("dvc pull -r poke_model")
+    ctx.run("dvc pull -r poke_models")
 
 @task
 def push_data(ctx):
@@ -58,7 +58,7 @@ def push_data(ctx):
 
 @task
 def push_model(ctx):
-    ctx.run("dvc push -r poke_model")
+    ctx.run("dvc push -r poke_models")
 
 
 @task(pull_data)
