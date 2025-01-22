@@ -3,7 +3,6 @@ import os
 import matplotlib.pyplot as plt
 import torch
 import typer
-
 from data import PokeData
 
 
