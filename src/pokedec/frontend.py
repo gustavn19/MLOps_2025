@@ -59,7 +59,7 @@ def main() -> None:
             st.markdown(f"### Prediction: {class_name}")
 
             # make a nice bar chart
-            
+
             data = {
                 "Class": [labels[int(i)] for i in range(len(probabilities))],
                 "Probability": probabilities,
