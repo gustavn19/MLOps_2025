@@ -144,4 +144,3 @@ Werkzeug
 wheel
 bentoml
 timm
-dvc
