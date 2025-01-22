@@ -13,6 +13,14 @@ from data import PokeData
 
 
 def load_model(model_version: int):
+    """Load a trained model from the specified version.
+
+    Args:
+        model_version (int): The version of the model to load.
+
+    Returns:
+        torch.nn.Module: The trained model.
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # Load trained model from Weights & Biases
     if not os.path.exists(f"artifacts/pokedec_models-v{model_version}"):

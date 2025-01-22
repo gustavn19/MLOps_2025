@@ -5,12 +5,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import typer
+import wandb
+from data import PokeData
 from model import get_model
 from torch.profiler import ProfilerActivity, profile, record_function, tensorboard_trace_handler
 from tqdm import tqdm
-
-import wandb
-from data import PokeData
 
 # Create the training_logs directory if it doesn't exist
 os.makedirs("training_logs", exist_ok=True)
