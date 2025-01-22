@@ -4,12 +4,11 @@ import timm
 import torch
 import torch.nn as nn
 import typer
+import wandb
+from data import PokeData
 from PIL import Image
 from torchvision import transforms
 from tqdm import tqdm
-
-import wandb
-from data import PokeData
 
 
 def load_model(model_version: int):
