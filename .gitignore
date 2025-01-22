@@ -183,6 +183,7 @@ data/
 wandb/
 profiler/
 training_logs/
+artifacts/
 
 # Secrets
 secrets/
