@@ -6,10 +6,11 @@ import torch.nn as nn
 import torch.optim as optim
 import typer
 import wandb
-from data import PokeData
 from model import get_model
 from torch.profiler import ProfilerActivity, profile, record_function, tensorboard_trace_handler
 from tqdm import tqdm
+
+from data import PokeData
 
 # Create the training_logs directory if it doesn't exist
 os.makedirs("training_logs", exist_ok=True)
@@ -17,7 +18,7 @@ os.makedirs("training_logs", exist_ok=True)
 
 def setup_logging(run_id: str):
     # Generate a unique log file name based on the run_id
-    log_filename = f"training_logs/training_{run_id}.log"
+    log_filename = f"training_logs/{run_id}.log"
 
     # Configure logging to save to a unique file
     logging.basicConfig(
@@ -82,7 +83,7 @@ def train_model(
             )
 
         # Setup logging
-        setup_logging(run.id)
+        setup_logging(f"pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_id_{run.id}")
 
         lr = run.config.lr
         batch_size = run.config.batch_size
