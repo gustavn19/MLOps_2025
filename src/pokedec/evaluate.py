@@ -89,7 +89,7 @@ def predict(model_version: int, image: str):
     Parameters:
         model_version (int): The version of the model to use for prediction.
         image (str): The path to the image file to be classified.
-        
+
     Returns:
         tuple: A tuple containing the raw output from the model and the predicted label.
     """
