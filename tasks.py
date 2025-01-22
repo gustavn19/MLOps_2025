@@ -49,21 +49,10 @@ def pull_data(ctx):
 
 
 @task
-def pull_model(ctx):
-    ctx.run("dvc pull -r poke_models")
-
-@task
 def push_data(ctx):
     ctx.run("dvc push -r poke_store")
 
-@task
-def push_model(ctx):
-    ctx.run("dvc push -r poke_models")
 
-
-@task(pull_data)
-def train(ctx):
-    ctx.run("my_cli train")
 
 
 # Setup commands
