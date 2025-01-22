@@ -213,7 +213,7 @@ def train_model(num_classes: int = 1000,
             torch.save(model.state_dict(), f"models_trained/single/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
 
         artifact = wandb.Artifact(
-            name=f"pokedec_models_best",
+            name=f"pokedec_models",
             type="model",
             description="Model trained to classfiy Pokemon during sweep",
         )
