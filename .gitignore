@@ -182,7 +182,7 @@ cython_debug/
 data/
 wandb/
 profiler/
-models/
+models
 
 # Secrets
 secrets/
