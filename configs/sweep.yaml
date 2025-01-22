@@ -21,8 +21,6 @@ parameters:
         distribution: log_uniform_values
         min: 0.0001
         max: 0.1
-    seed:
-        values: [42]
 run_cap: 20
 command:
   - ${env}
