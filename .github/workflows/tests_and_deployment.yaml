@@ -16,7 +16,7 @@ jobs:
         operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
         python-version: ["3.12"]
 
-    steps: 
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -61,32 +61,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-          cache: 'pip'
-          cache-dependency-path: setup.py
-
-      - name: Install dependencies
-        run: |
-          pip install dvc
-          pip install dvc-gs
-
       - name: Set credentials path
         shell: bash
         run: |
           echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
-      
-      - name: Get data and model data # TODO: Create a second dvc bucket for the model so the data and model can be pulled separately
-        shell: bash
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS_DATA }}
-        run: |
-          echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
-          dvc remote add -d my_remote gs://poke_store
-          dvc remote modify my_remote  credentialpath "$CREDENTIALS_PATH"
-          dvc pull -r my_remote
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2

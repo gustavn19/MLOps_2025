@@ -24,7 +24,6 @@ def dataset_statistics(datadir: str = os.path.join(os.getcwd(), "data", "raw")) 
     print(f"Number of images: {len(test_dataset)}")
     print(f"Image shape: {test_dataset[0][0].shape}")
 
-    
     # Plot some examples
     plt.figure(figsize=(10, 10))
     for i in range(25):

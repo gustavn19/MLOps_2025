@@ -5,15 +5,15 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import typer
-from model import get_model
-from torch. profiler import ProfilerActivity, profile, record_function, tensorboard_trace_handler
-from tqdm import tqdm
-
 import wandb
 from data import PokeData
+from model import get_model
+from torch.profiler import ProfilerActivity, profile, record_function, tensorboard_trace_handler
+from tqdm import tqdm
 
 # Create the training_logs directory if it doesn't exist
 os.makedirs("training_logs", exist_ok=True)
+
 
 def setup_logging(run_id: str):
     # Generate a unique log file name based on the run_id
@@ -28,27 +28,25 @@ def setup_logging(run_id: str):
         ]
     )
 
+
 logger = logging.getLogger(__name__)
 
 # Set the device to GPU if available, otherwise use mps or CPU
-DEVICE = torch.device(
-    "cuda"
-    if torch.cuda.is_available()
-    else "mps" if torch.backends.mps.is_available() else "cpu"
-)
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 
-def train_model(num_classes: int = 1000,
-                batch_size: int = 32,
-                num_epochs: int = 100,
-                lr: float = 1e-4,
-                wd: float = 1e-4,
-                use_wandb: bool = True,
-                profiling: bool = False,
-                export_model: bool = True,
-                sweep: bool = True,
-                ) -> None:
-    '''
+def train_model(
+    num_classes: int = 1000,
+    batch_size: int = 32,
+    num_epochs: int = 100,
+    lr: float = 1e-4,
+    wd: float = 1e-4,
+    use_wandb: bool = True,
+    profiling: bool = False,
+    export_model: bool = True,
+    sweep: bool = True,
+) -> None:
+    """
     Trains a model to classify Pokemon using the specified hyperparameters.
 
     Args:
@@ -64,7 +62,7 @@ def train_model(num_classes: int = 1000,
 
     Returns:
         None: The function performs training, validation, and artifact logging but does not return any value.
-    '''
+    """
 
     # Initialize Weights & Biases
     if use_wandb:
@@ -94,7 +92,9 @@ def train_model(num_classes: int = 1000,
     else:
         setup_logging("dummy_run")
 
-    logger.info(f"Training model with the following config: lr={lr}, batch_size={batch_size}, num_epochs={num_epochs}, wd={wd}, num_classes={num_classes}, use_wandb={use_wandb}, profiling={profiling}, export_model={export_model}, sweep={sweep}")
+    logger.info(
+        f"Training model with the following config: lr={lr}, batch_size={batch_size}, num_epochs={num_epochs}, wd={wd}, num_classes={num_classes}, use_wandb={use_wandb}, profiling={profiling}, export_model={export_model}, sweep={sweep}"
+    )
 
     # Load model
     model = get_model(num_classes=num_classes)
@@ -102,7 +102,7 @@ def train_model(num_classes: int = 1000,
     model = model.to(DEVICE)
 
     # Load data
-    poke_data = PokeData(data_path='data', batch_size=batch_size, num_workers=1)
+    poke_data = PokeData(data_path="data", batch_size=batch_size, num_workers=1)
     train_loader = poke_data._get_train_loader()
     val_loader = poke_data._get_val_loader()
 
@@ -111,8 +111,7 @@ def train_model(num_classes: int = 1000,
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=wd)
 
     # Learning rate scheduler (optional)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)   
-
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
 
     # Training loop
     for epoch in tqdm(range(num_epochs)):
@@ -126,12 +125,12 @@ def train_model(num_classes: int = 1000,
 
         if profiling:
             # Profiling context manager
-            with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-                        record_shapes=True, 
-                        with_stack=True,
-                        on_trace_ready=tensorboard_trace_handler("models/profiler"),
-                        ) as prof:
-
+            with profile(
+                activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+                record_shapes=True,
+                with_stack=True,
+                on_trace_ready=tensorboard_trace_handler("models/profiler"),
+            ) as prof:
                 for inputs, labels in train_loader:
                     inputs, labels = inputs.to(DEVICE), labels.to(DEVICE)
                     optimizer.zero_grad()
@@ -178,7 +177,6 @@ def train_model(num_classes: int = 1000,
         epoch_acc = correct / total
         logger.info(f"Train Loss: {epoch_loss:.4f}, Train Acc: {epoch_acc:.4f}")
 
-
         # Validation phase
         model.eval()
         val_loss = 0.0
@@ -200,13 +198,14 @@ def train_model(num_classes: int = 1000,
         logger.info(f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
 
         if use_wandb:
-            wandb.log({"train_loss": epoch_loss, "train_accuracy": epoch_acc, "val_loss": val_loss, "val_accuracy": val_acc})
+            wandb.log(
+                {"train_loss": epoch_loss, "train_accuracy": epoch_acc, "val_loss": val_loss, "val_accuracy": val_acc}
+            )
 
         # Step the scheduler
         scheduler.step()
 
     logger.info("Finished Training")
-
 
     # Save the model
     if use_wandb:
@@ -229,13 +228,12 @@ def train_model(num_classes: int = 1000,
             artifact.add_file(f"models/single/pokedec_model.pth")
         run.log_artifact(artifact)
 
-
     # Export model to ONNX format
     if export_model and use_wandb:
         model.eval()
         img, target = next(iter(val_loader))
         img, target = img.to(DEVICE), target.to(DEVICE)
-        
+
         # Choose the first image in the batch
         img = img[0].unsqueeze(0)
 
@@ -258,6 +256,7 @@ def train_model(num_classes: int = 1000,
         run.log_artifact(artifact)
 
         wandb.finish()
+
 
 if __name__ == "__main__":
     typer.run(train_model)

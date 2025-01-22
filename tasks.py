@@ -23,6 +23,7 @@ def git(ctx, message):
     ctx.run(f"git commit -m '{message}'")
     ctx.run(f"git push")
 
+
 @task
 def push_all(ctx, message):
     # freeze requirements and update requirements.txt
@@ -45,12 +46,12 @@ def dvc(ctx, folder: str = "data", message: str = "Add_new_data"):
 
 @task
 def pull_data(ctx):
-    ctx.run("dvc pull")
+    ctx.run("dvc pull -r poke_store")
 
 
-@task(pull_data)
-def train(ctx):
-    ctx.run("my_cli train")
+@task
+def push_data(ctx):
+    ctx.run("dvc push -r poke_store")
 
 
 # Setup commands
@@ -62,6 +63,7 @@ def create_environment(ctx: Context) -> None:
         echo=True,
         pty=not WINDOWS,
     )
+
 
 # TODO: Change the task so it works with uv manager
 @task
@@ -92,7 +94,11 @@ def preprocess_data(ctx: Context) -> None:
 @task
 def train(ctx: Context) -> None:
     """Train model with best config from sweep."""
-    ctx.run(f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 64 --num-epochs 3 --lr 0.002598303563236388 --wd 0.058812577376538534 --use-wandb --no-profiling --export-model --no-sweep", echo=True, pty=not WINDOWS)
+    ctx.run(
+        f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 64 --num-epochs 3 --lr 0.002598303563236388 --wd 0.058812577376538534 --use-wandb --no-profiling --export-model --no-sweep",
+        echo=True,
+        pty=not WINDOWS,
+    )
 
 
 @task
