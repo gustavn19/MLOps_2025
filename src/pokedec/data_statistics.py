@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import torch
 import typer
 
-from src.pokedec.data import PokeData
+from pokedec.data import PokeData
 
 
 def dataset_statistics(datadir: str = os.path.join(os.getcwd(), "data", "raw")) -> None:
