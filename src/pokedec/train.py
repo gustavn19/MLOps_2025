@@ -24,8 +24,7 @@ def setup_logging(run_id: str):
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(log_filename),
-            logging.StreamHandler()
+            logging.FileHandler(log_filename)
         ]
     )
 
