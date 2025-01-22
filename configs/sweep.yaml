@@ -27,7 +27,6 @@ command:
   - C:\Users\Damsgaard\Documents\Github\MLOps_2025\.venv\Scripts\python.exe
   - ${program}
   - ${args}
-  - --run-id=${run_id}
 
 # To run in command-line:
 # - First create sweep:

@@ -1,4 +1,3 @@
-import datetime
 import logging
 import os
 
@@ -49,7 +48,6 @@ def train_model(num_classes: int = 1000,
                 profiling: bool = False,
                 export_model: bool = True,
                 sweep: bool = True,
-                run_id: str = None,
                 ) -> None:
     '''
     Trains a model to classify Pokemon using the specified hyperparameters.
@@ -64,16 +62,10 @@ def train_model(num_classes: int = 1000,
         profiling (bool): Whether to enable profiling during training.
         export_model (bool): Whether to export the model to ONNX format after training.
         sweep (bool): Whether to run the training as part of a sweep.
-        run_id (str): Unique identifier for the run, used for logging.
 
     Returns:
         None: The function performs training, validation, and artifact logging but does not return any value.
     '''
-
-    # Setup logging
-    if run_id is None:
-        run_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    setup_logging(run_id)
 
     # Initialize Weights & Biases
     if use_wandb:
@@ -85,13 +77,18 @@ def train_model(num_classes: int = 1000,
             name=f"pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}",
         )
 
+        # Setup logging
+        setup_logging(run.id)
+
         lr = run.config.lr
         batch_size = run.config.batch_size
         num_epochs = run.config.epochs
         wd = run.config.wd
         num_classes = run.config.num_classes
-    
-    logger.info(f"Training model with the following config: lr={lr}, batch_size={batch_size}, num_epochs={num_epochs}, wd={wd}, num_classes={num_classes}, use_wandb={use_wandb}, profiling={profiling}, export_model={export_model}, sweep={sweep}, run_id={run_id}")
+    else:
+        setup_logging("dummy_run")
+
+    logger.info(f"Training model with the following config: lr={lr}, batch_size={batch_size}, num_epochs={num_epochs}, wd={wd}, num_classes={num_classes}, use_wandb={use_wandb}, profiling={profiling}, export_model={export_model}, sweep={sweep}")
 
     # Load model
     model = get_model(num_classes=num_classes)
