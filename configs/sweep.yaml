@@ -18,15 +18,9 @@ parameters:
     batch-size:
         values: [32, 64]
     wd:
-        distribution: uniform
+        distribution: log_uniform_values
         min: 0.0001
         max: 0.1
-    use-wandb:
-        values: [True]
-    profiling:
-        values: [False]
-    export-model:
-        values: [False]
 run_cap: 20
 command:
   - ${env}

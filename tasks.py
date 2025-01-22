@@ -94,7 +94,7 @@ def preprocess_data(ctx: Context) -> None:
 @task
 def train(ctx: Context) -> None:
     """Train model with best config from sweep."""
-    ctx.run(f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 64 --num-epochs 10 --lr 0.002598303563236388 --wd 0.058812577376538534 --no-use-wandb --profiling --no-export-model", echo=True, pty=not WINDOWS)
+    ctx.run(f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 64 --num-epochs 3 --lr 0.002598303563236388 --wd 0.058812577376538534 --use-wandb --no-profiling --export-model --no-sweep", echo=True, pty=not WINDOWS)
 
 
 @task

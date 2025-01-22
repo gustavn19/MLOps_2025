@@ -12,8 +12,26 @@ from tqdm import tqdm
 import wandb
 from data import PokeData
 
+# Create the training_logs directory if it doesn't exist
+os.makedirs("training_logs", exist_ok=True)
+
+def setup_logging(run_id: str):
+    # Generate a unique log file name based on the run_id
+    log_filename = f"training_logs/training_{run_id}.log"
+
+    # Configure logging to save to a unique file
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(log_filename),
+            logging.StreamHandler()
+        ]
+    )
+
 logger = logging.getLogger(__name__)
 
+# Set the device to GPU if available, otherwise use mps or CPU
 DEVICE = torch.device(
     "cuda"
     if torch.cuda.is_available()
@@ -26,9 +44,10 @@ def train_model(num_classes: int = 1000,
                 num_epochs: int = 100,
                 lr: float = 1e-4,
                 wd: float = 1e-4,
-                use_wandb: bool = False,
+                use_wandb: bool = True,
                 profiling: bool = False,
-                export_model: bool = False
+                export_model: bool = True,
+                sweep: bool = True,
                 ) -> None:
     '''
     Trains a model to classify Pokemon using the specified hyperparameters.
@@ -42,6 +61,7 @@ def train_model(num_classes: int = 1000,
         use_wandb (bool): Whether to use Weights & Biases for logging.
         profiling (bool): Whether to enable profiling during training.
         export_model (bool): Whether to export the model to ONNX format after training.
+        sweep (bool): Whether to run the training as part of a sweep.
 
     Returns:
         None: The function performs training, validation, and artifact logging but does not return any value.
@@ -52,10 +72,23 @@ def train_model(num_classes: int = 1000,
         run = wandb.init(
             project="pokedec_train",
             entity="pokedec_mlops",
-            config={"lr": lr, "batch_size": batch_size, "epochs": num_epochs},
+            config={"lr": lr, "batch_size": batch_size, "epochs": num_epochs, "wd": wd, "num_classes": num_classes},
             job_type="train",
             name=f"pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}",
         )
+
+        # Setup logging
+        setup_logging(run.id)
+
+        lr = run.config.lr
+        batch_size = run.config.batch_size
+        num_epochs = run.config.epochs
+        wd = run.config.wd
+        num_classes = run.config.num_classes
+    else:
+        setup_logging("dummy_run")
+
+    logger.info(f"Training model with the following config: lr={lr}, batch_size={batch_size}, num_epochs={num_epochs}, wd={wd}, num_classes={num_classes}, use_wandb={use_wandb}, profiling={profiling}, export_model={export_model}, sweep={sweep}")
 
     # Load model
     model = get_model(num_classes=num_classes)
@@ -171,24 +204,28 @@ def train_model(num_classes: int = 1000,
 
     # Save the model
     if use_wandb:
-        # Sweep
-        #os.makedirs("models/sweep", exist_ok=True)
-        #torch.save(model.state_dict(), f"models/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
+        if sweep:
+            os.makedirs("models_trained/sweep", exist_ok=True)
+            torch.save(model.state_dict(), f"models_trained/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
+        else:
+            # Single model
+            os.makedirs("models_trained/single", exist_ok=True)
+            torch.save(model.state_dict(), f"models_trained/single/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
 
-        # Single model
-        torch.save(model.state_dict(), f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
-        
         artifact = wandb.Artifact(
-            name=f"pokedec_models_best",
+            name=f"pokedec_models",
             type="model",
             description="Model trained to classfiy Pokemon during sweep",
         )
-        artifact.add_file(f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
+        if sweep:
+            artifact.add_file(f"models_trained/sweep/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
+        else:
+            artifact.add_file(f"models_trained/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}.pth")
         run.log_artifact(artifact)
-        
+
 
     # Export model to ONNX format
-    if export_model:
+    if export_model and use_wandb:
         model.eval()
         img, target = next(iter(val_loader))
         img, target = img.to(DEVICE), target.to(DEVICE)
@@ -205,16 +242,15 @@ def train_model(num_classes: int = 1000,
             opset_version=11,
         )
 
-        # Add the model to the artifact
         artifact = wandb.Artifact(
-            name="pokedec_model_best_onnx",
+            name=f"pokedec_models_onnx",
             type="model",
-            description="Model trained to classify Pokemon",
+            description="Model trained to classfiy Pokemon exported to ONNX format",
         )
-        artifact.add_file("models/model_best.onnx")
+        artifact.add_file(f"models/model.onnx")
         run.log_artifact(artifact)
 
-    wandb.finish()
+        wandb.finish()
 
 if __name__ == "__main__":
     typer.run(train_model)
