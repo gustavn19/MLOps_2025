@@ -216,7 +216,7 @@ def train_model(
             torch.save(model.state_dict(), f"models/single/pokedec_model_{run.id}.pth")
 
         artifact = wandb.Artifact(
-            name=f"pokedec_models",
+            name="pokedec_models",
             type="model",
             description="Model trained to classfiy Pokemon during sweep",
         )
@@ -246,7 +246,7 @@ def train_model(
         )
 
         artifact = wandb.Artifact(
-            name=f"pokedec_models_onnx",
+            name="pokedec_models_onnx",
             type="model",
             description="Model trained to classfiy Pokemon exported to ONNX format",
         )
