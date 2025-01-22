@@ -3,3 +3,6 @@
 ['remote "poke_store"']
     url = gs://poke_store
     credentialpath = ../secrets/exalted-strata.json
+['remote "poke_models"']
+    url = gs://poke_models
+    credentialpath = ../secrets/exalted-strata.json

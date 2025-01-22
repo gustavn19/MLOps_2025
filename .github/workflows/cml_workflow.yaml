@@ -50,11 +50,11 @@ jobs:
 
     - name: Check data statistics
       run: |
-        python src/my_project/dataset_statistics.py
+        python src/pokedec/dataset_statistics.py
 
     - name: Check data statistics & generate report
       run: |
-        python src/my_project/dataset_statistics.py > ../data_statistics.md
+        python src/pokedec/dataset_statistics.py
         echo '![](./pokemon_examples.png "Pokemon images")' >> ../data_statistics.md
         echo '![](./train_label_distribution.png "Train label distribution")' >> ../data_statistics.md
         echo '![](./test_label_distribution.png "Test label distribution")' >> ../data_statistics.md
