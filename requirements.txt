@@ -106,7 +106,6 @@ python-dateutil
 python-dotenv
 python-slugify
 python-socks
-pytorch-lightning
 pytz
 PyYAML
 regex
