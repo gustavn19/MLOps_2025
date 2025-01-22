@@ -95,7 +95,7 @@ def preprocess_data(ctx: Context) -> None:
 def train(ctx: Context) -> None:
     """Train model with best config from sweep."""
     ctx.run(
-        f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 64 --num-epochs 3 --lr 0.002598303563236388 --wd 0.058812577376538534 --use-wandb --no-profiling --export-model --no-sweep",
+        f"python src/{PROJECT_NAME}/train.py --num-classes 1000 --batch-size 32 --num-epochs 20 --lr 0.0014630344466593833 --wd 0.025329564397808917 --use-wandb --no-profiling --export-model --no-sweep",
         echo=True,
         pty=not WINDOWS,
     )
@@ -104,7 +104,7 @@ def train(ctx: Context) -> None:
 @task
 def evaluate(ctx: Context) -> None:
     """Evaluate model."""
-    ctx.run(f"python src/{PROJECT_NAME}/evaluate.py", echo=True, pty=not WINDOWS)
+    ctx.run(f"python src/{PROJECT_NAME}/evaluate.py 31", echo=True, pty=not WINDOWS)
 
 
 @task
