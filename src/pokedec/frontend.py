@@ -40,7 +40,7 @@ def main() -> None:
     # reverse the prediction to get the class name
     labels = {value: key for key, value in labels["pokemon_labels"].items()}
 
-    st.title("Image Classification")
+    st.title("PokeDec: Pokemon Detection")
 
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
@@ -56,17 +56,17 @@ def main() -> None:
 
             # show the image and prediction
             st.image(image, caption="Uploaded Image")
-            st.write("Prediction:", class_name)
+            st.markdown(f"### Prediction: {class_name}")
 
             # make a nice bar chart
-
+            
             data = {
                 "Class": [labels[int(i)] for i in range(len(probabilities))],
                 "Probability": probabilities,
             }
             df = pd.DataFrame(data)
             df.set_index("Class", inplace=True)
-            st.bar_chart(df, y="Probability")
+            st.bar_chart(df.nlargest(10, "Probability"), y="Probability")
         else:
             st.write("Failed to get prediction")
 
