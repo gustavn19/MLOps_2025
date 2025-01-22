@@ -14,7 +14,7 @@ def get_backend_url():
     client = run_v2.ServicesClient()
     services = client.list_services(parent=parent)
     for service in services:
-        if service.name.split("/")[-1] == "backend_pokedec":
+        if service.name.split("/")[-1] == "backend-pokedec":
             return service.uri
     name = os.environ.get("BACKEND", None)
     return name
