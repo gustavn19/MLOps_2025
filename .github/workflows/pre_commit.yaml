@@ -39,4 +39,3 @@ jobs:
       with:
         commit_message: Pre-commit fixes
         commit_options: '--no-verify'
-
