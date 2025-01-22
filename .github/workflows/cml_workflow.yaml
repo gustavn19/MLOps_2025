@@ -50,18 +50,23 @@ jobs:
         dvc remote modify my_remote  credentialpath "$CREDENTIALS_PATH"
         dvc pull -r my_remote
 
-
     - name: Pull data
       run: |
         dvc pull --no-run-cache
 
+    - name: Confirm code location
+      run: |
+        echo "Current directory:"
+        pwd
+        ls -R
+
     - name: Check data statistics
       run: |
-        python src/pokedec/dataset_statistics.py
+        python ./src/pokedec/dataset_statistics.py
 
     - name: Check data statistics & generate report
       run: |
-        python src/pokedec/dataset_statistics.py
+        python ./src/pokedec/dataset_statistics.py
         echo '![](./pokemon_examples.png "Pokemon images")' >> ../data_statistics.md
         echo '![](./train_label_distribution.png "Train label distribution")' >> ../data_statistics.md
         echo '![](./test_label_distribution.png "Test label distribution")' >> ../data_statistics.md
