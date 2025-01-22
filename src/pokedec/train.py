@@ -186,7 +186,6 @@ def train_model(num_classes: int = 1000,
         artifact.add_file(f"models/pokedec_model_bs_{batch_size}_e_{num_epochs}_lr_{lr}_wd_{wd}_best.pth")
         run.log_artifact(artifact)
         
-        wandb.finish()
 
     # Export model to ONNX format
     if export_model:
@@ -205,6 +204,17 @@ def train_model(num_classes: int = 1000,
             output_names=["output"],
             opset_version=11,
         )
+
+        # Add the model to the artifact
+        artifact = wandb.Artifact(
+            name="pokedec_model_best_onnx",
+            type="model",
+            description="Model trained to classify Pokemon",
+        )
+        artifact.add_file("models/model_best.onnx")
+        run.log_artifact(artifact)
+
+    wandb.finish()
 
 if __name__ == "__main__":
     typer.run(train_model)
