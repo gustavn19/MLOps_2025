@@ -200,7 +200,7 @@ def train_model(num_classes: int = 1000,
         torch.onnx.export(
             model,
             img,
-            "models/model.onnx",
+            "models/model_best.onnx",
             input_names=["input"],
             output_names=["output"],
             opset_version=11,
