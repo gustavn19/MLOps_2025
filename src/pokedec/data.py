@@ -10,6 +10,8 @@ from torch.utils.data import DataLoader, Dataset, TensorDataset
 from torchvision import transforms
 from tqdm import tqdm
 
+random.seed(42)
+torch.manual_seed(42)
 
 def split_data_and_preprocess(raw_data_path: Path = Path("data/raw/dataset"),
                output_folder: Path = Path("data/processed"),
