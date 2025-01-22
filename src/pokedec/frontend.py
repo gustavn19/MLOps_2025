@@ -37,6 +37,8 @@ def main() -> None:
         raise ValueError(msg)
 
     labels = json.load(open("pokemon_labels.json"))
+    # reverse the prediction to get the class name
+    labels = {value: key for key, value in labels['pokemon_labels'].items()}
 
     st.title("Image Classification")
 
@@ -50,7 +52,8 @@ def main() -> None:
             prediction = result["prediction"]
             probabilities = result["probabilities"]
 
-            class_name = labels[str(prediction)]
+
+            class_name = labels[int(prediction)]
 
             # show the image and prediction
             st.image(image, caption="Uploaded Image")
@@ -59,8 +62,8 @@ def main() -> None:
             # make a nice bar chart
 
             data = {
-                "Class": [labels[str(i)] for i in range(len(probabilities[0]))],
-                "Probability": probabilities[0],
+                "Class": [labels[int(i)] for i in range(len(probabilities))],
+                "Probability": probabilities,
             }
             df = pd.DataFrame(data)
             df.set_index("Class", inplace=True)
