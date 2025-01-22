@@ -1,0 +1,37 @@
+name: Data Drift Workflow
+
+on:
+  push:
+    branches:
+    - main
+    # paths:
+    # - 'src/my_project/app_monitoring.py'
+    # tags-ignore:
+    # - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set credentials path
+      shell: bash
+      run: |
+            echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: Submit build
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS_REGISTRY }}
+        PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      run: |
+            echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
+            gcloud auth activate-service-account --key-file="$CREDENTIALS_PATH"
+            gcloud config set project $PROJECT_ID
+            gcloud builds submit --config cloudbuild_datadrift.yaml
