@@ -45,7 +45,20 @@ def dvc(ctx, folder: str = "data", message: str = "Add_new_data"):
 
 @task
 def pull_data(ctx):
-    ctx.run("dvc pull")
+    ctx.run("dvc pull -r poke_store")
+
+
+@task
+def pull_model(ctx):
+    ctx.run("dvc pull -r poke_model")
+
+@task
+def push_data(ctx):
+    ctx.run("dvc push -r poke_store")
+
+@task
+def push_model(ctx):
+    ctx.run("dvc push -r poke_model")
 
 
 @task(pull_data)
