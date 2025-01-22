@@ -1,10 +1,8 @@
 import json
 import os
-import pickle
 from pathlib import Path
 
 import anyio
-import numpy as np
 import pandas as pd
 import torch
 from evidently.metric_preset import DataDriftPreset, DataQualityPreset, TargetDriftPreset
@@ -27,8 +25,8 @@ image_characteristics = {}
 for i, image in enumerate(training_data_images):
     image_characteristics[i] = {
         "image_characteristics": calculate_image_characteristics(image, rgb=True),
-        "prediction": training_data_labels[i]
-      }
+        "prediction": training_data_labels[i],
+    }
 
 
 def run_analysis(reference_data: pd.DataFrame, current_data: pd.DataFrame) -> None:

@@ -32,9 +32,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-def save_prediction_to_gcp(
-    filepath: str, filename: str, prediction: int, probabilities: list[float]
-):
+def save_prediction_to_gcp(filepath: str, filename: str, prediction: int, probabilities: list[float]):
     """Save the prediction results to GCP bucket."""
     client = storage.Client()
     bucket = client.bucket("poke_store")
