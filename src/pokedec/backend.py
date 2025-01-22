@@ -27,7 +27,7 @@ def predict_image(image_path: str) -> str:
     np_img = np.array(img, dtype=np.float32)
     np_img = np_img.transpose((2, 0, 1))  # Shape (128, 128, 3) -> (3, 128, 128)
     np_img = np.expand_dims(np_img, axis=0)  # Shape (1, 3, 128, 128)
-    output = model.run(None, {"input": np_img})[0] 
+    output = model.run(None, {"input": np_img})[0]
     output = output[0]  # Shape (1, 1000) -> (1000,)
     exp_out = np.exp(output - np.max(output))
     probabilities = exp_out / np.sum(exp_out)
