@@ -212,11 +212,11 @@ def train_model(
     if use_wandb:
         if sweep:
             os.makedirs("models/sweep", exist_ok=True)
-            torch.save(model.state_dict(), f"models/sweep/pokedec_model.pth")
+            torch.save(model.state_dict(), f"models/sweep/pokedec_model_{run.id}.pth")
         else:
             # Single model
             os.makedirs("models/single", exist_ok=True)
-            torch.save(model.state_dict(), f"models/single/pokedec_model.pth")
+            torch.save(model.state_dict(), f"models/single/pokedec_model_{run.id}.pth")
 
         artifact = wandb.Artifact(
             name=f"pokedec_models",
@@ -224,9 +224,9 @@ def train_model(
             description="Model trained to classfiy Pokemon during sweep",
         )
         if sweep:
-            artifact.add_file(f"models/sweep/pokedec_model.pth")
+            artifact.add_file(f"models/sweep/pokedec_model_{run.id}.pth")
         else:
-            artifact.add_file(f"models/single/pokedec_model.pth")
+            artifact.add_file(f"models/single/pokedec_model_{run.id}.pth")
         run.log_artifact(artifact)
 
     # Export model to ONNX format
@@ -242,7 +242,7 @@ def train_model(
         torch.onnx.export(
             model,
             img,
-            "models/onnx/pokedec_model.onnx",
+            f"models/onnx/pokedec_model_{run.id}.onnx",
             input_names=["input"],
             output_names=["output"],
             opset_version=11,
@@ -253,7 +253,7 @@ def train_model(
             type="model",
             description="Model trained to classfiy Pokemon exported to ONNX format",
         )
-        artifact.add_file(f"models/onnx/pokedec_model.onnx")
+        artifact.add_file(f"models/onnx/pokedec_model_{run.id}.onnx")
         run.log_artifact(artifact)
 
         wandb.finish()
