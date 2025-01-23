@@ -143,7 +143,7 @@ s214611, s214585, s201680, s214647
 >
 > Answer:
 
-We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file) containing different pre-trained Pytorch image encoders and backbones. From this large list we chose to work with a ResNet structure called [ResNet50-D](https://huggingface.co/timm/resnet50d.ra4_e3600_r224_in1k). This model is employed in our project to predict image classes. Here we utilize that the model is already trained on the ImageNet-1k, and thus only a further fine-tuning of the last classification layer is necessary to achieve reliable results. It helped completing the project as we did not have to worry about training a model from scratch, but instead could rely on an easily integratable model. 
+We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file) containing different pre-trained Pytorch image encoders and backbones. From this large list we chose to work with a ResNet structure called [ResNet50-D](https://huggingface.co/timm/resnet50d.ra4_e3600_r224_in1k). This model is employed in our project to predict image classes. Here we utilize that the model is already trained on the ImageNet-1k, and thus only a further fine-tuning of the last classification layer is necessary to achieve reliable results. It helped completing the project as we did not have to worry about training a model from scratch, but instead could rely on an easily integratable model.
 
 ## Coding environment
 
@@ -246,7 +246,7 @@ The reason both formatting and documentations are important in larger projects, 
 >
 > Answer:
 
-We generally didn’t use branches and PRs in our project as we had a lot of communication and even pair programming during the project which made it less necessary. However, when we approached the end of the project and we were working on different solutions we made some branches each made for the specific function that was implemented. At this point we also had set up a great CI/CD pipeline including a testing workflow which allowed us to check that everything was working before merging the pull request into main. One of the benefits of working with branches is exactly that you can keep main stable and working while developing new features. Furthermore, it makes it easy to revert back to previous versions and in general work together with many people as you can review each other's code. 
+We generally didn’t use branches and PRs in our project as we had a lot of communication and even pair programming during the project which made it less necessary. However, when we approached the end of the project and we were working on different solutions we made some branches each made for the specific function that was implemented. At this point we also had set up a great CI/CD pipeline including a testing workflow which allowed us to check that everything was working before merging the pull request into main. One of the benefits of working with branches is exactly that you can keep main stable and working while developing new features. Furthermore, it makes it easy to revert back to previous versions and in general work together with many people as you can review each other's code.
 
 
 ### Question 10
@@ -281,10 +281,10 @@ Additionally, DVC enabled automation by maintaining the data in the cloud, ensur
 >
 > Answer:
 
-As mentioned in an earlier question, our continuous integration  setup is designed to ensure code quality and reliability through automated testing and linting. We have organized our CI into multiple workflows, each serving a specific purpose. 
+As mentioned in an earlier question, our continuous integration  setup is designed to ensure code quality and reliability through automated testing and linting. We have organized our CI into multiple workflows, each serving a specific purpose.
 Unit Testing and Coverage: We run unit tests using pytest and measure code coverage using coverage. This ensures that our code is thoroughly tested and helps identify untested parts of the codebase. The workflow is triggered on every push and pull request to the main branch. We test our code on multiple operating systems (Ubuntu, Windows, and macOS) and Python versions 3.12 to ensure compatibility across different environments. We also use caching to speed up the installation of dependencies.
 Linting: We use ruff for linting our code to ensure it adheres to coding standards and best practices. This helps maintain code quality and readability. The linting step is included in our pre-commit hooks and is also run as part of our CI workflow.
-CML workflow: We use DVC to manage our data and model versions, and we then have a workflow which checks the data statistics of the data. 
+CML workflow: We use DVC to manage our data and model versions, and we then have a workflow which checks the data statistics of the data.
 **TODO: Insert example of triggered workflow**
 
 ## Running code and tracking experiments
@@ -320,7 +320,7 @@ The file can also be called a single time through *invoke* by writing *invoke tr
 >
 > Answer:
 
-As we used a config file, the relevant configuration can be found there. Also all model runs were saved to wandb (weights and biases) together with their artifacts, so that any of the trained models can be found again. To reproduce the sweep experiment one can run a sweep to wandb themselves, and then call an agent to train the models. Furthermore, we are setting a seed as part of our experiments to ensure that the randomness is tracked. This question however is not super relevant in our case as we did not do many experiments. 
+As we used a config file, the relevant configuration can be found there. Also all model runs were saved to wandb (weights and biases) together with their artifacts, so that any of the trained models can be found again. To reproduce the sweep experiment one can run a sweep to wandb themselves, and then call an agent to train the models. Furthermore, we are setting a seed as part of our experiments to ensure that the randomness is tracked. This question however is not super relevant in our case as we did not do many experiments.
 
 
 ### Question 14
@@ -354,8 +354,8 @@ As we used a config file, the relevant configuration can be found there. Also al
 > Answer:
 
 For our project, we developed several Docker images to streamline the development, training, and deployment processes. We created mainly two Docker images a backend and a frontend, but furthermore also a data drift detection. These are made to ensure consistency across different environments and to facilitate easy scaling and reproducibility.
-- Backend Image: We built a Docker image for the backend, which includes the necessary scripts and dependencies to serve the backend API which is used for inference running our trained model. 
-- Frontend Image: We created a Docker image for the frontend, which uses Streamlit to provide a user interface for interacting with the model. 
+- Backend Image: We built a Docker image for the backend, which includes the necessary scripts and dependencies to serve the backend API which is used for inference running our trained model.
+- Frontend Image: We created a Docker image for the frontend, which uses Streamlit to provide a user interface for interacting with the model.
 - Data Drift Detection Image: We built a Docker image for detecting data drift. This image includes the necessary scripts and dependencies to analyze data drift.
 **TODO: Link to docker and commands to run**
 
