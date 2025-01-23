@@ -26,11 +26,7 @@ steps:
     '--region',
     'europe-west3',
     '--platform',
-    'managed',
-    'resources',
-    'limits',
-    'memory',
-    '1Gi'
+    'managed'
   ]
 options:
   logging: CLOUD_LOGGING_ONLY

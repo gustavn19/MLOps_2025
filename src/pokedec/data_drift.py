@@ -4,7 +4,8 @@ from pathlib import Path
 
 import anyio
 import pandas as pd
-import torch
+import numpy as np
+from PIL import Image
 from evidently.metric_preset import DataDriftPreset, DataQualityPreset, TargetDriftPreset
 from evidently.report import Report
 from fastapi import FastAPI
@@ -13,19 +14,22 @@ from google.cloud import storage
 from image_analysis import calculate_image_characteristics
 
 # MNIST data as tensors
-training_data_path = os.path.join(os.getcwd(), "data", "processed", "train.pt")
+training_data_path = os.path.join(os.getcwd(), "data", "raw", "dataset")
 
-training_data = torch.load(training_data_path)
-
-training_data_images = training_data["images"].numpy()
-training_data_labels = training_data["labels"].numpy()
+# Load the training data
+training_data_images = {}
+for i, dir in enumerate(os.listdir(training_data_path)):
+    # Open each file in the directory and save the data to a dictionary
+    for image in (os.listdir(os.path.join(training_data_path, dir))):
+        # The images are png, so we need to convert them to numpy arrays, (3, 128, 128) and reshape them to (128, 128, 3)
+        training_data_images[i] =  np.array(Image.open(os.path.join(training_data_path, dir, image)).convert("RGB").resize((128, 128))).reshape(3,128,128)
 
 # Get the image characteristics for the training data, take each image as a separate file and calculate the characteristics and save them in a dictionary
 image_characteristics = {}
-for i, image in enumerate(training_data_images):
+for i, image in training_data_images.items():
     image_characteristics[i] = {
         "image_characteristics": calculate_image_characteristics(image, rgb=True),
-        "prediction": training_data_labels[i],
+        "prediction": i,
     }
 
 

@@ -1,7 +1,8 @@
 anyio
 pandas
-torch==2.2.0 --index-url https://download.pytorch.org/whl/cpu/torch-2.2.0%2Bcpu-cp312-cp312-linux_x86_64.whl#sha256=8258824bec0181e01a086aef5809016116a97626af2dcbf932d4e0b192d9c1b8
 evidently
+numpy
+Pillow
 fastapi[standard]
 fastapi_utils
 google-cloud-storage
