@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 import anyio
 import numpy as np
 import onnxruntime
+import wandb
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from PIL import Image
 from google.cloud import storage
@@ -25,8 +26,22 @@ async def lifespan(app: FastAPI):
     global model, transform, imagenet_classes
 
     # Load the ONNX model
-    model_path = os.path.join(os.getcwd(), "models", "onnx", "model_best.onnx")
+    wandb_api_key = os.getenv("WANDB_API_KEY")
+    if not wandb_api_key:
+        raise ValueError("WANDB_API_KEY environment variable not set")
+    wandb.login(key=wandb_api_key)
+    run = wandb.init(
+        project="pokedec_train",
+        entity="pokedec_mlops",
+        job_type="inference",
+        name="pokedec_inference",
+    )
+    artifact = run.use_artifact("pokedec_mlops/pokedec_train/pokedec_models_onnx:best", type="model")
+    artifact_dir = artifact.download()
+    model_path = os.path.join(artifact_dir, "pokedec_model.onnx")
     model = onnxruntime.InferenceSession(model_path)
+
+    wandb.finish()
 
     yield
 
@@ -81,7 +96,7 @@ def predict_image(image_path: str) -> str:
 @app.get("/")
 async def root():
     """Root endpoint."""
-    return {"message": "Hello from the backend!"}
+    return {"message": "Hello from the backend with wandb!"}
 
 
 # FastAPI endpoint to classify an image
