@@ -1,0 +1,7 @@
+#!include:.gitignore
+.dvc/
+.git/
+.github/
+.venv
+.vscode/
+!data/raw/dataset
