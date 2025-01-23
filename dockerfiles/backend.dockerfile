@@ -20,4 +20,3 @@ RUN pip install -r requirements_backend.txt --no-cache-dir
 RUN pip install pydantic
 
 CMD exec uvicorn backend:app --port $PORT --host 0.0.0.0
-
