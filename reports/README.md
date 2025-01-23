@@ -258,7 +258,9 @@ For
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC for managing the data in the project. It was immensibly helpful with making sure that the same raw and processed data was available for all
+team members. This versioning made sure that no mistakes happened with different data formats, therefore simplifying the experiments and the rest of the 
+pipeline.
 
 ### Question 11
 
@@ -374,7 +376,11 @@ As we used a config file, the relevant configuration can be found in there. Also
 >
 > Answer:
 
---- question 17 fill here ---
+We used Google cloud storage buckets for storing the training data and for storing the logs when the backend was called with new images,
+this was done to detect data drifting. 
+Furthermore we also used Google Artifact registry to store our docker containers and
+we used google Run to host the containers on the web, so they were accessible.
+Google Logging and monitoring was also used to track the usage of the services.
 
 ### Question 18
 
@@ -398,7 +404,8 @@ As we used a config file, the relevant configuration can be found in there. Also
 >
 > Answer:
 
---- question 19 fill here ---
+[Our Buckets](figures/our_buckets.png)
+[Inside Our Bucket](figures/our_bucekt_inside.png)
 
 ### Question 20
 
@@ -407,7 +414,8 @@ As we used a config file, the relevant configuration can be found in there. Also
 >
 > Answer:
 
---- question 20 fill here ---
+[Our Registry](figures/our_registry.png)
+[Inside our Registry](figures/our_registry_inside.png)
 
 ### Question 21
 
@@ -416,7 +424,7 @@ As we used a config file, the relevant configuration can be found in there. Also
 >
 > Answer:
 
---- question 21 fill here ---
+[Our build history](figures/our_build_history.png)
 
 ### Question 22
 
@@ -448,7 +456,7 @@ As we used a config file, the relevant configuration can be found in there. Also
 >
 > Answer:
 
---- question 23 fill here ---
+We used FastAPI to make a backend for our backend which could then be called by the frontend which was made with streamlit. (Her kan der godt skrives lidt mere)
 
 ### Question 24
 
@@ -560,7 +568,9 @@ As we used a config file, the relevant configuration can be found in there. Also
 >
 > Answer:
 
---- question 30 fill here ---
+The biggest challenge was that the github workflows could not be entirely tested locally before submitting them. Therefore there was a lot of trial and error
+with getting the workflows to run properly. The same goes with building in google cloud.
+(Skriv mere)
 
 ### Question 31
 
@@ -578,4 +588,5 @@ As we used a config file, the relevant configuration can be found in there. Also
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
---- question 31 fill here ---
+Student s214611 made the docker containers and different cloudbuild.yaml configurations and made sure that the build were succesfully submitted to 
+google cloud and they were up and running. 
