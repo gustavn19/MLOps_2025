@@ -19,9 +19,9 @@ def python(ctx):
 
 @task
 def git(ctx, message):
-    ctx.run(f"git add .")
+    ctx.run("git add .")
     ctx.run(f"git commit -m '{message}'")
-    ctx.run(f"git push")
+    ctx.run("git push")
 
 
 @task
@@ -31,7 +31,7 @@ def push_all(ctx, message):
     ctx.run("git add requirements.txt")
     ctx.run("git commit -m 'update requirements.txt'")
     ctx.run("git add .")
-    ctx.run(f"git commit -m '" + message + "'")
+    ctx.run("git commit -m '" + message + "'")
     ctx.run("git push")
 
 
@@ -40,8 +40,8 @@ def dvc(ctx, folder: str = "data", message: str = "Add_new_data"):
     ctx.run(f"dvc add {folder}")
     ctx.run(f"git add {folder}.dvc .gitignore")
     ctx.run(f"git commit -m '{message}'")
-    ctx.run(f"git push")
-    ctx.run(f"dvc push")
+    ctx.run("git push")
+    ctx.run("dvc push")
 
 
 @task
