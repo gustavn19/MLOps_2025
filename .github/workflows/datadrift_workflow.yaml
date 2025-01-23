@@ -17,6 +17,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install dependencies
+      run: |
+          python -m pip install -U pip setuptools wheel
+          pip install dvc dvc-gs 
+
     - name: Set credentials path
       shell: bash
       run: |
