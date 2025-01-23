@@ -5,7 +5,6 @@ from contextlib import asynccontextmanager
 import anyio
 import numpy as np
 import onnxruntime
-import wandb
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from PIL import Image
 from google.cloud import storage
