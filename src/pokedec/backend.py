@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
     - None
     """
     global model, transform, imagenet_classes
-    
+
     # Load the ONNX model
     run = wandb.init()
     artifact = run.use_artifact("pokedec_mlops/pokedec_train/pokedec_models_onnx:best", type="model")
