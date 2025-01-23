@@ -8,7 +8,7 @@ import onnxruntime
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from PIL import Image
 from google.cloud import storage
-from image_analysis import calculate_image_characteristics
+from pokedec.image_analysis import calculate_image_characteristics
 from datetime import datetime, timezone
 
 

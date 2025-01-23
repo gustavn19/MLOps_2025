@@ -144,3 +144,4 @@ Werkzeug
 wheel
 bentoml
 timm
+httpx
