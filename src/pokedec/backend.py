@@ -26,7 +26,14 @@ async def lifespan(app: FastAPI):
     global model, transform, imagenet_classes
 
     # Load the ONNX model
-    run = wandb.init()
+    wandb_api_key = os.getenv("WANDB_API_KEY")
+    if not wandb_api_key:
+        raise ValueError("WANDB_API_KEY environment variable not set")
+    wandb.login(key=wandb_api_key)
+    run = wandb.init(
+        project="pokedec_train",
+        entity="pokedec_mlops",
+    )
     artifact = run.use_artifact("pokedec_mlops/pokedec_train/pokedec_models_onnx:best", type="model")
     artifact_dir = artifact.download()
     model_path = os.path.join(artifact_dir, "pokedec_model.onnx")

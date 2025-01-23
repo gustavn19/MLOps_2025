@@ -20,4 +20,6 @@ RUN pip install pydantic
 
 # CMD exec uvicorn backend:app --port $PORT --host 0.0.0.0
 
+ENV WANDB_API_KEY=${WANDB_API_KEY}
+
 ENTRYPOINT ["sh", "-c", "uvicorn backend:app --port $PORT --host=0.0.0.0"]
