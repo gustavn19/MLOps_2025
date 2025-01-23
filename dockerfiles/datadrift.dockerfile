@@ -11,6 +11,7 @@ WORKDIR /app
 COPY src/pokedec/data_drift.py /app/data_drift.py
 COPY src/pokedec/image_analysis.py /app/image_analysis.py
 COPY requirements_datadrift.txt /app/requirements_datadrift.txt
+COPY data/raw/dataset /app/data/raw/dataset
 
 RUN pip install -r requirements_datadrift.txt --no-cache-dir
 
