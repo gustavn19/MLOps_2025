@@ -61,9 +61,9 @@ jobs:
     - name: Check data statistics & generate report
       run: |
         python src/pokedec/data_statistics.py
-        echo '![](./pokemon_examples.png "Pokemon images")' >> ../data_statistics.md
-        echo '![](./train_label_distribution.png "Train label distribution")' >> ../data_statistics.md
-        echo '![](./test_label_distribution.png "Test label distribution")' >> ../data_statistics.md
+        echo '![](pokemon_examples.png "Pokemon images")' >> ../data_statistics.md
+        echo '![](train_label_distribution.png "Train label distribution")' >> ../data_statistics.md
+        echo '![](test_label_distribution.png "Test label distribution")' >> ../data_statistics.md
 
     - name: Setup cml
       uses: iterative/setup-cml@v3
