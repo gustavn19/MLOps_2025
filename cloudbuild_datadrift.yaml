@@ -27,6 +27,10 @@ steps:
     'europe-west3',
     '--platform',
     'managed',
+    'resources',
+    'limits',
+    'memory',
+    '1Gi'
   ]
 options:
   logging: CLOUD_LOGGING_ONLY
