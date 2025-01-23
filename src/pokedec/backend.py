@@ -1,11 +1,15 @@
 import os
+import json
 from contextlib import asynccontextmanager
 
 import anyio
 import numpy as np
 import onnxruntime
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from PIL import Image
+from google.cloud import storage
+from image_analysis import calculate_image_characteristics
+from datetime import datetime, timezone
 
 
 @asynccontextmanager
@@ -26,6 +30,27 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+def save_prediction_to_gcp(filepath: str, filename: str, prediction: int, probabilities: list[float]):
+    """Save the prediction results to GCP bucket."""
+    client = storage.Client()
+    bucket = client.bucket("poke_store")
+    time = datetime.now(tz=timezone.utc)
+
+    image_characteristics = calculate_image_characteristics(filepath, rgb=True)
+
+    # Prepare prediction data
+    data = {
+        "image_characteristics": image_characteristics,
+        "filename": filename,
+        "prediction": prediction,
+        "probabilities": probabilities,
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
+    }
+    blob = bucket.blob(f"prediction_{time}.json")
+    blob.upload_from_string(json.dumps(data))
+    print("Prediction saved to GCP bucket.")
 
 
 def predict_image(image_path: str) -> str:
@@ -59,13 +84,22 @@ async def root():
 
 # FastAPI endpoint to classify an image
 @app.post("/classify/")
-async def classify_image(file: UploadFile = File(...)):
+async def classify_image(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     """Classify image endpoint."""
     try:
         contents = await file.read()
         async with await anyio.open_file(file.filename, "wb") as f:
             await f.write(contents)
         probabilities, prediction = predict_image(file.filename)
+
+        background_tasks.add_task(
+            save_prediction_to_gcp,
+            filepath=file.filename,
+            filename=file.filename,
+            prediction=prediction,
+            probabilities=probabilities.tolist(),
+        )
+
         return {
             "filename": file.filename,
             "prediction": prediction,
@@ -78,4 +112,4 @@ async def classify_image(file: UploadFile = File(...)):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

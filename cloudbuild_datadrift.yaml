@@ -1,0 +1,32 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Build container image for datadrift'
+  args: [
+    'build',
+    '-t',
+    'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/datadrift_pokedec:latest',
+    '-f',
+    'dockerfiles/datadrift.dockerfile',
+    '.'
+  ]
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Push container image for datadrift'
+  args: [
+    'push',
+    'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/datadrift_pokedec:latest'
+  ]
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'Deploy to Cloud Run'
+  args: [
+    'run',
+    'deploy',
+    'datadrift-pokedec',
+    '--image',
+    'europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/datadrift_pokedec:latest',
+    '--region',
+    'europe-west3',
+    '--platform',
+    'managed',
+  ]
+options:
+  logging: CLOUD_LOGGING_ONLY

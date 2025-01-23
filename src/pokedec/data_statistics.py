@@ -6,24 +6,24 @@ import typer
 from data import PokeData
 
 
-def dataset_statistics(datadir: str = os.path.join(os.getcwd(), "data", "raw")) -> None:
+def dataset_statistics(datadir: str = os.path.join(os.getcwd(), "data")) -> None:
     """Compute dataset statistics.
 
     Args:
-    - datadir (str): The directory containing the raw dataset.
+    - datadir (str): The directory containing the dataset.
     """
     train_dataset = PokeData(datadir, 1)._get_train_loader()
     val_dataset = PokeData(datadir, 1)._get_val_loader()
     test_dataset = PokeData(datadir, 1)._get_test_loader()
-    print(f"Train dataset: {train_dataset.name}")
+    print("Train dataset")
     print(f"Number of images: {len(train_dataset)}")
     print(f"Image shape: {train_dataset[0][0].shape}")
     print("\n")
-    print(f"Validation dataset: {val_dataset.name}")
+    print("Validation dataset")
     print(f"Number of images: {len(val_dataset)}")
     print(f"Image shape: {val_dataset[0][0].shape}")
     print("\n")
-    print(f"Test dataset: {test_dataset.name}")
+    print("Test dataset")
     print(f"Number of images: {len(test_dataset)}")
     print(f"Image shape: {test_dataset[0][0].shape}")
 
