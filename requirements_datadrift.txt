@@ -1,0 +1,8 @@
+anyio
+pandas
+torch
+evidently
+fastapi[standard]
+fastapi_utils
+google.cloud
+google.cloud.storage

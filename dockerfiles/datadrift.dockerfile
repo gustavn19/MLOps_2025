@@ -8,7 +8,7 @@ RUN mkdir /app
 
 WORKDIR /app
 
-RUN pip install fastapi evidently numpy pandas google-cloud-storage --no-cache-dir
+RUN pip install requirements_datadrift.txt --no-cache-dir
 
 COPY src/pokedec/data_drift.py /app/data_drift.py
 COPY src/pokedec/image_analysis.py /app/image_analysis.py
