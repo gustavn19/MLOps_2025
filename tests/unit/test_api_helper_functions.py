@@ -21,6 +21,7 @@ def test_predict_image():
     # assert probabilities[prediction] > 0.9
     print("We're in business")
 
+
 # TODO maybe test edge case where dim of image is not 128x128?
 
 if __name__ == "__main__":
