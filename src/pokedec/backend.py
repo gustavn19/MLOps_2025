@@ -33,11 +33,15 @@ async def lifespan(app: FastAPI):
     run = wandb.init(
         project="pokedec_train",
         entity="pokedec_mlops",
+        jobtype="inference",
+        name="pokedec_inference",
     )
     artifact = run.use_artifact("pokedec_mlops/pokedec_train/pokedec_models_onnx:best", type="model")
     artifact_dir = artifact.download()
     model_path = os.path.join(artifact_dir, "pokedec_model.onnx")
     model = onnxruntime.InferenceSession(model_path)
+
+    wandb.finish()
 
     yield
 
