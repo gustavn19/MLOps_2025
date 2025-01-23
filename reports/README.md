@@ -63,12 +63,12 @@ will check the repositories and the code to verify your answers.
 * [X] Construct one or multiple docker files for your code (M10)
 * [X] Build the docker files locally and make sure they work as intended (M10)
 * [X] Write one or multiple configurations files for your experiments (M11)
-* [-] Use Hydra to load the configurations and manage your hyperparameters (M11)
+* [ ] Use Hydra to load the configurations and manage your hyperparameters (M11)
 * [X] Use profiling to optimize your code (M12)
 * [X] Use logging to log important events in your code (M14)
 * [X] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
 * [X] Consider running a hyperparameter optimization sweep (M14)
-* [-] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
+* [ ] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
 
 ### Week 2
 
@@ -77,7 +77,7 @@ will check the repositories and the code to verify your answers.
 * [X] Calculate the code coverage (M16)
 * [X] Get some continuous integration running on the GitHub repository (M17)
 * [X] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
-* [Mathias] Add a linting step to your continuous integration (M17)
+* [X] Add a linting step to your continuous integration (M17)
 * [X] Add pre-commit hooks to your version control setup (M18)
 * [X] Add a continues workflow that triggers when data changes (M19)
 * [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
