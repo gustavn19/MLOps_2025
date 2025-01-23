@@ -13,12 +13,11 @@ WORKDIR /app
 
 COPY requirements_backend.txt /app/requirements_backend.txt
 COPY src/pokedec/backend.py /app/backend.py
-COPY models/onnx/model_best.onnx models/onnx/model_best.onnx
+COPY models/onnx/model_best.onnx /app/models/onnx/model_best.onnx
+COPY src/pokedec/image_analysis.py /app/image_analysis.py
 
 RUN pip install -r requirements_backend.txt --no-cache-dir
-RUN python -m pip install -e src/pokedec
 RUN pip install pydantic
 
-# CMD exec uvicorn backend:app --port $PORT --host 0.0.0.0
+CMD exec uvicorn backend:app --port $PORT --host 0.0.0.0
 
-ENTRYPOINT ["sh", "-c", "uvicorn backend:app --port $PORT --host=0.0.0.0"]
