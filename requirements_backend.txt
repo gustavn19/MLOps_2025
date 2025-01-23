@@ -4,3 +4,4 @@ uvicorn
 numpy
 onnxruntime
 wandb
+google-cloud-storage

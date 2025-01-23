@@ -4,5 +4,4 @@ torch
 evidently
 fastapi[standard]
 fastapi_utils
-google.cloud
-google.cloud.storage
+google-cloud-storage
