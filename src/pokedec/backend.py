@@ -5,7 +5,6 @@ from contextlib import asynccontextmanager
 import anyio
 import numpy as np
 import onnxruntime
-import wandb
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from PIL import Image
 from google.cloud import storage
@@ -26,11 +25,7 @@ async def lifespan(app: FastAPI):
     global model, transform, imagenet_classes
 
     # Load the ONNX model
-    run = wandb.init()
-    artifact = run.use_artifact("pokedec_mlops/pokedec_train/pokedec_models_onnx:best", type="model")
-    artifact_dir = artifact.download()
-    model_path = os.path.join(artifact_dir, "pokedec_model.onnx")
-    model = onnxruntime.InferenceSession(model_path)
+    model = onnxruntime.InferenceSession(os.path.join(os.getcwd(), "models", "onnx", "model_best.onnx"))
 
     yield
 
