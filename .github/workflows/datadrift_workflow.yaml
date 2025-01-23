@@ -22,6 +22,16 @@ jobs:
       run: |
             echo "CREDENTIALS_PATH=$RUNNER_TEMP/credentials.json" >> $GITHUB_ENV
 
+    - name: Get data
+      shell: bash
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS_DATA }}
+      run: |
+        echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
+        dvc remote add -d my_remote gs://poke_store
+        dvc remote modify my_remote  credentialpath "$CREDENTIALS_PATH"
+        dvc pull -r my_remote --force
+
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
