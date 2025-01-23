@@ -39,7 +39,7 @@ def run_analysis(reference_data: pd.DataFrame, current_data: pd.DataFrame) -> No
         ]
     )
     text_overview_report.run(reference_data=reference_data, current_data=current_data)
-    text_overview_report.save("monitoring.html")
+    text_overview_report.save_html("monitoring.html")
 
 
 def lifespan(app: FastAPI):
