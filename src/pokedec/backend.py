@@ -92,7 +92,7 @@ def predict_image(image_path: str) -> str:
 @app.get("/")
 async def root():
     """Root endpoint."""
-    return {"message": "Hello from the backend!"}
+    return {"message": "Hello from the backend with wandb!"}
 
 
 # FastAPI endpoint to classify an image
