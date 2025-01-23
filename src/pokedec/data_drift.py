@@ -20,9 +20,11 @@ training_data_path = os.path.join(os.getcwd(), "data", "raw", "dataset")
 training_data_images = {}
 for i, dir in enumerate(os.listdir(training_data_path)):
     # Open each file in the directory and save the data to a dictionary
-    for image in (os.listdir(os.path.join(training_data_path, dir))):
+    for image in os.listdir(os.path.join(training_data_path, dir)):
         # The images are png, so we need to convert them to numpy arrays, (3, 128, 128) and reshape them to (128, 128, 3)
-        training_data_images[i] =  np.array(Image.open(os.path.join(training_data_path, dir, image)).convert("RGB").resize((128, 128))).reshape(3,128,128)
+        training_data_images[i] = np.array(
+            Image.open(os.path.join(training_data_path, dir, image)).convert("RGB").resize((128, 128))
+        ).reshape(3, 128, 128)
 
 # Get the image characteristics for the training data, take each image as a separate file and calculate the characteristics and save them in a dictionary
 image_characteristics = {}
