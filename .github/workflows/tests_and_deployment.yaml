@@ -77,5 +77,5 @@ jobs:
           echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$CREDENTIALS_PATH"
           gcloud auth activate-service-account --key-file="$CREDENTIALS_PATH"
           gcloud config set project $PROJECT_ID
-          gcloud builds submit --config cloudbuild_backend.yaml
-          gcloud builds submit --config cloudbuild_frontend.yaml
+          gcloud builds submit --config ./configs/cloudbuild_backend.yaml
+          gcloud builds submit --config ./configs/cloudbuild_frontend.yaml
