@@ -16,6 +16,7 @@ COPY src/pokedec/backend.py /app/backend.py
 COPY models/onnx/model_best.onnx models/onnx/model_best.onnx
 
 RUN pip install -r requirements_backend.txt --no-cache-dir
+RUN python -m pip install -e src/pokedec
 RUN pip install pydantic
 
 # CMD exec uvicorn backend:app --port $PORT --host 0.0.0.0

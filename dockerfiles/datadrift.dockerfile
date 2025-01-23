@@ -13,6 +13,7 @@ COPY src/pokedec/image_analysis.py /app/image_analysis.py
 COPY requirements_datadrift.txt /app/requirements_datadrift.txt
 
 RUN pip install -r requirements_datadrift.txt --no-cache-dir
+RUN python -m pip install -e src/pokedec
 
 EXPOSE $PORT
 

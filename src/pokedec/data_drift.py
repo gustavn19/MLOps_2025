@@ -10,7 +10,7 @@ from evidently.report import Report
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from google.cloud import storage
-from image_analysis import calculate_image_characteristics
+from pokedec.image_analysis import calculate_image_characteristics
 
 # MNIST data as tensors
 training_data_path = os.path.join(os.getcwd(), "data", "processed", "train.pt")
