@@ -17,4 +17,4 @@ EXPOSE $PORT
 
 # CMD exec uvicorn data_drift:app --port $PORT --host 0.0.0.0
 
-ENTRYPOINT ["sh", "-c", "uvicorn data_drift:app --server.port $PORT --server.address= 0.0.0.0"]
+ENTRYPOINT ["sh", "-c", "uvicorn data_drift:app --port $PORT --host 0.0.0.0"]

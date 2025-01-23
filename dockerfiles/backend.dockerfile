@@ -20,4 +20,4 @@ RUN pip install pydantic
 
 # CMD exec uvicorn backend:app --port $PORT --host 0.0.0.0
 
-ENTRYPOINT ["sh", "-c", "uvicorn backend:app --server.port $PORT --server.address=0.0.0.0"]
+ENTRYPOINT ["sh", "-c", "uvicorn backend:app --port $PORT --host=0.0.0.0"]
