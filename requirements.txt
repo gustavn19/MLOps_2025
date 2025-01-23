@@ -145,3 +145,4 @@ wheel
 bentoml
 timm
 httpx
+onnxruntime
