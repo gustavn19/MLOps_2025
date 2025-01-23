@@ -259,7 +259,7 @@ For
 > Answer:
 
 We used DVC for managing the data in the project. It was immensibly helpful with making sure that the same raw and processed data was available for all
-team members. This versioning made sure that no mistakes happened with different data formats, therefore simplifying the experiments and the rest of the 
+team members. This versioning made sure that no mistakes happened with different data formats, therefore simplifying the experiments and the rest of the
 pipeline.
 
 ### Question 11
@@ -377,7 +377,7 @@ As we used a config file, the relevant configuration can be found in there. Also
 > Answer:
 
 We used Google cloud storage buckets for storing the training data and for storing the logs when the backend was called with new images,
-this was done to detect data drifting. 
+this was done to detect data drifting.
 Furthermore we also used Google Artifact registry to store our docker containers and
 we used google Run to host the containers on the web, so they were accessible.
 Google Logging and monitoring was also used to track the usage of the services.
@@ -588,5 +588,5 @@ with getting the workflows to run properly. The same goes with building in googl
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-Student s214611 made the docker containers and different cloudbuild.yaml configurations and made sure that the build were succesfully submitted to 
-google cloud and they were up and running. 
+Student s214611 made the docker containers and different cloudbuild.yaml configurations and made sure that the build were successfully submitted to
+google cloud and they were up and running.
