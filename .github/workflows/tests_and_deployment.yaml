@@ -48,8 +48,6 @@ jobs:
           dvc pull -r my_remote --force
 
       - name: Run tests & coverage
-        env:
-          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
         run: |
           coverage run -m pytest tests/unit/
           coverage report -m
