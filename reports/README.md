@@ -501,7 +501,9 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 >
 > Answer:
 
-We used locust to load test our API giving the results below: (insert image)
+We performed testing of the backend API. We tested both the root end point as well as the classify endpoint. We additionally tested some edge cases such as providing the API with an unallowed input (i.e. a .txt file even though it only accepts images) as well as no input at all. 
+We furthermore performed load testing using locust using the same setup as in the exercises. This yielded an average response time of 130 ms, a median of 100 ms, and a 99th percentile of 1300 ms. 
+
 
 ### Question 26
 
