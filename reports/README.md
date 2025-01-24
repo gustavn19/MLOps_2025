@@ -414,7 +414,7 @@ Google Logging and monitoring was also used to track the usage of the services, 
 >
 > Answer:
 
-We did not use the compute engine and virtual machines, as we trained our model locally. 
+We did not use the compute engine and virtual machines, as we trained our model locally.
 
 
 ### Question 19
