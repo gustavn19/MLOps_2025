@@ -184,6 +184,7 @@ wandb/
 profiler/
 training_logs/
 artifacts/
+*.onnx
 
 # Secrets
 secrets/
