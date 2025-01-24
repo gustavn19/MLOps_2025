@@ -471,7 +471,7 @@ Google Logging and monitoring was also used to track the usage of the services, 
 >
 > Answer:
 
-We used FastAPI to make a backend for our backend which could then be called by the frontend which was made with streamlit. (Her kan der godt skrives lidt mere)
+We used FastAPI to make an endpoint for our backend which could then be called by the frontend which was made with streamlit. The structure of the API was very simple consisting of one root endpoint to check the API availability and a post endpoint /classify, taking an image (a file) as input and returning the predicted label and the probability distribution of the labels. One thing we could have done to maybe enhance our API was to maybe do some caching of the model to make the response time even faster.
 
 ### Question 24
 
@@ -487,7 +487,7 @@ We used FastAPI to make a backend for our backend which could then be called by 
 >
 > Answer:
 
---- question 24 fill here ---
+We managed to deploy our API in the cloud using the google cloud run, we did so by first containerising the API into an application using docker (locally only writing the docker file). Then we would use gcloud build summit specifying a config file cloubuild_backend containing the steps for first building the image, then pushing the image into the artifact registry and then deploying using cloud run. The link to the hosted API is [here](https://backend-pokedec-228711502156.europe-west3.run.app/docs?fbclid=IwZXh0bgNhZW0CMTEAAR3qRjYHBhRdPM5MuNGGrzR3PEkQklV4vnPjVWMdkpv2LPVHfcz2wQM1AyU_aem_Vwkqx1o5GWBtL_Ua4KBIpw#/)
 
 ### Question 25
 
