@@ -336,7 +336,9 @@ As we used a config file, the relevant configuration can be found there. Also al
 >
 > Answer:
 
---- question 14 fill here ---
+Below are found three images from the sweep we did. The [first image](figures/Sweep_charts.png) shows four graphs over the four metrics that we chose to track during training, this being the loss and accuracy on the training set and validation set. Here we see the progress over the training loop which shows that the model seems to quickly overfit to the training data.The validation metrics also stagnate at the same time at around 60%. This is not too bad of an accuracy considering there are 1000 classes, however, the model did achieve impressive results on the imagenet-1k dataset, so it seems that improvements can still be made to generalize the learning more and avoid overfit.
+While we added weight decay to the optimizer to add regularization, it does not seem to have had enough of an impact. It did show to be an important parameter as reflected in [the second image](figures/Sweep_importance.png) on the importance of each parameter. The parameter with the most importance when running the sweep with bayesian optimization when minimizing the validation loss is the learning rate. We also see the history of the models and their validation loss. We see that the sweep investigated different combinations at the start, but later on the models all achieved similar values on the metric. This resulted from the Bayesian optimization having found certain parameter values that work well for the minimization and focusing on those. More exploration would maybe have been ideal in our case to further test many different configurations, and also avoid that a combination could be seen as bad because of an unlucky value from the learning rate or weight decay distribution sampling.
+Lastly [the third image](figures/Sweep_diagram.png) shows what combination each run had and what validation loss that resulted in.
 
 ### Question 15
 
