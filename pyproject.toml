@@ -18,7 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-  "anyio>=4.8.0",
+  "anyio>=4.8",
   "coverage>=7.6.10",
   "dvc>=3.59",
   "dvc-gs>=3.0.1",
