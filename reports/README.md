@@ -163,7 +163,13 @@ We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/hu
 >
 > Answer:
 
-We initially chose to work with the UV dependency manager as it had shown to be super fast and manage dependencies great across devices. The dependencies are listed in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*, and sorted in dependency groups depending on which case we need to use it. This can for an instance help us reduce the size of our docker images. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can run *uv sync* which creates a virtual environment (alternatively by running *uv venv*) and then download all relevant dependencies regardless of operating system. However in the project phase we encountered a few issues, so to easily reuse some of our code from the exercises made with pip we instead chose to list the dependencies in different requirements files. Each corresponds to the specific needs of the docker image it is used to create.
+We initially chose to work with the UV dependency manager as it had shown to be super fast and manage dependencies great across devices. The dependencies are listed in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*, and sorted in dependency groups depending on which case we need to use it. This can for an instance help us reduce the size of our docker images. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can run *uv sync which creates a virtual environment (alternatively by by running *uv venv*) and then download all relevant dependencies regardless of operating system. Afterwards *uv run is used to run files in the project. However in the project phase we encountered a few issues, so to easily reuse some of our code from the exercises made with pip we instead chose to list the dependencies in different requirements files. Each corresponds to the specific needs of the docker image it is used to create. To use requirement files on mac first use:
+```
+ python3 -m venv .venv
+ source .venv/bin/activate
+ pip install -r requirements_backend.txt
+ ```
+where you change the name to the relevant requirements file. 
 
 ### Question 5
 
