@@ -583,6 +583,7 @@ We have furthermore setup a framework for detecting data drifting.
 Whenever the data got changed (changes to the dvc config) a CML-workflow was run on the data which collected some descriptive statistics on the data.
 
 Thereafter you could run the train.py script to update the model weights and save this to wandb, doing so would trigger a workflow then pushing the changes. This workflow would use 3 cloudbuild.yaml and dockerfiles to create a backend API (fastapi) for the model, a frontend in streamlit and a datadrift monitoring api. When calls are made to the backend these are stored in a GCP bucket which is then collected by the datadrift service which monitors the system.
+A small overview of some key features are captured in [here](figures/small_overview.png), which shows how some of the connections work between Github, GCP, WANDB, DVC, a local machine, and a user accessing the api.
 
 ### Question 30
 
