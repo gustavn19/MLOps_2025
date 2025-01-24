@@ -9,7 +9,7 @@ import wandb
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from PIL import Image
 from google.cloud import storage
-from image_analysis import calculate_image_characteristics
+from src.pokedec.image_analysis import calculate_image_characteristics
 from datetime import datetime, timezone
 
 
