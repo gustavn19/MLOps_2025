@@ -129,7 +129,7 @@ Group 38
 >
 > Answer:
 
-s214611, s214585, s201680, s214647
+s201680, s214585, s214611, s214647
 
 ### Question 3
 > **A requirement to the project is that you include a third-party package not covered in the course. What framework**
@@ -143,7 +143,7 @@ s214611, s214585, s201680, s214647
 >
 > Answer:
 
-We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file) containing different pre-trained Pytorch image encoders and backbones. From this large list we chose to work with a ResNet structure called [ResNet50-D](https://huggingface.co/timm/resnet50d.ra4_e3600_r224_in1k). This model is employed in our project to predict image classes. Here we utilize that the model is already trained on the ImageNet-1k, and thus only a further fine-tuning of the last classification layer is necessary to achieve reliable results. It helped completing the project as we did not have to worry about training a model from scratch, but instead could rely on an easily integratable model.
+We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/huggingface/pytorch-image-models?tab=readme-ov-file) containing different pre-trained Pytorch image encoders and backbones. From this large list we chose to work with a ResNet structure called [ResNet50-D](https://huggingface.co/timm/resnet50d.ra4_e3600_r224_in1k). This model is employed in our project to predict image classes. Here we utilize that the model is already trained on the ImageNet-1k, and thus only a further fine-tuning of the last classification layer is necessary to achieve reliable results. It helped completing the project as we did not have to worry about training a model from scratch, but instead could rely on an easily integratable model. 
 
 ## Coding environment
 
@@ -163,7 +163,7 @@ We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/hu
 >
 > Answer:
 
-We initially chose to work with the UV dependency manager as it had shown to be super fast and manage dependencies great across devices. The dependencies are listed in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*, and sorted in dependency groups depending on which case we need to use it. This can for an instance help us reduce the size of our docker images. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can run *uv sync which creates a virtual environment (alternatively by by running *uv venv*) and then download all relevant dependencies regardless of operating system. However in the project phase we encountered a few issues, so to easily reuse some of our code from the exercises made with pip we instead chose to list the dependencies in different requirements files. Each corresponds to the specific needs of the docker image it is used to create. **TODO: Either update to uv or write tutorial for pip + venv**
+We initially chose to work with the UV dependency manager as it had shown to be super fast and manage dependencies great across devices. The dependencies are listed in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*, and sorted in dependency groups depending on which case we need to use it. This can for an instance help us reduce the size of our docker images. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can run *uv sync* which creates a virtual environment (alternatively by running *uv venv*) and then download all relevant dependencies regardless of operating system. However in the project phase we encountered a few issues, so to easily reuse some of our code from the exercises made with pip we instead chose to list the dependencies in different requirements files. Each corresponds to the specific needs of the docker image it is used to create.
 
 ### Question 5
 
@@ -180,7 +180,6 @@ We initially chose to work with the UV dependency manager as it had shown to be 
 > Answer:
 
 Using the cookiecutter template an overall structure for our repository was achieved dividing the code, saved models, data, tests, and otherfile into different relevant folders. Along the project all relevant data collection, model definition, training, evaluation, and backend are contained in the *src* folder. Following the training, model configurations and exports have been saved in the *models* folder in relevant subfolders for e.g. the sweep for hyperparameter optimization or profiling - though some of these are added to the gitignore due to file sizes being big and not relevant for pushing. The relevant .yaml files for configuring this are found in the *configs* folder along with all cloudbuild files. As the project uses dvc to handle the data, a *.dvc* has been added, while the *data* folder has been added to the .gitignore. In the *.github* folder can all workflows for Github Actions be found, and dockerfiles are also found in their respective folder as layed out by the cookiecutter template. In the root of the repository can the ignore files be found together with all requirements files.
-**TODO: Finalstructure after cleanup**
 
 ### Question 6
 
@@ -198,7 +197,6 @@ Using the cookiecutter template an overall structure for our repository was achi
 We added two different workflows to Github actions to ensure code quality and code formatting. The first is a continuous integration with pre-commit actions, which automatically pushes any changes found to the main branch. Secondly, a workflow with Ruff linting check and formats the code as well.
 All type hints and function or class documentation have been written locally with the help of Github Copilot to give a quick template and initial example to check and iterate on.
 The reason both formatting and documentations are important in larger projects, but also in general, is to ensure a cohesive structure, so that everyone can effortlessly understand what others have written and worked on.
-
 
 ## Version control
 
@@ -284,10 +282,9 @@ Additionally, DVC enabled automation by maintaining the data in the cloud, ensur
 > Answer:
 
 As mentioned in an earlier question, our continuous integration  setup is designed to ensure code quality and reliability through automated testing and linting. We have organized our CI into multiple workflows, each serving a specific purpose.
-Unit Testing and Coverage: We run unit tests using pytest and measure code coverage using coverage. This ensures that our code is thoroughly tested and helps identify untested parts of the codebase. The workflow is triggered on every push and pull request to the main branch. We test our code on multiple operating systems (Ubuntu, Windows, and macOS) and Python versions 3.12 to ensure compatibility across different environments. We also use caching to speed up the installation of dependencies.
-Linting: We use ruff for linting our code to ensure it adheres to coding standards and best practices. This helps maintain code quality and readability. The linting step is included in our pre-commit hooks and is also run as part of our CI workflow.
-CML workflow: We use DVC to manage our data and model versions, and we then have a workflow which checks the data statistics of the data.
-**TODO: Insert example of triggered workflow**
+- Unit Testing and Coverage: We run unit tests using pytest and measure code coverage using coverage. This ensures that our code is thoroughly tested and helps identify untested parts of the codebase. The workflow is triggered on every push and pull request to the main branch. We test our code on multiple operating systems (Ubuntu, Windows, and macOS) and Python versions 3.12 to ensure compatibility across different environments. We also use caching to speed up the installation of dependencies.
+- Linting: We use ruff for linting our code to ensure it adheres to coding standards and best practices. This helps maintain code quality and readability. The linting step is included in our pre-commit hooks and is also run as part of our CI workflow.
+- CML workflow: We use DVC to manage our data and model versions, and we then have a workflow which checks the data statistics of the data.
 
 ## Running code and tracking experiments
 
@@ -324,7 +321,6 @@ The file can also be called a single time through *invoke* by writing *invoke tr
 
 As we used a config file, the relevant configuration can be found there. Also all model runs were saved to wandb (weights and biases) together with their artifacts, so that any of the trained models can be found again. To reproduce the sweep experiment one can run a sweep to wandb themselves, and then call an agent to train the models. Furthermore, we are setting a seed as part of our experiments to ensure that the randomness is tracked. This question however is not super relevant in our case as we did not do many experiments.
 
-
 ### Question 14
 
 > **Upload 1 to 3 screenshots that show the experiments that you have done in W&B (or another experiment tracking**
@@ -359,7 +355,6 @@ For our project, we developed several Docker images to streamline the developmen
 - Backend Image: We built a Docker image for the backend, which includes the necessary scripts and dependencies to serve the backend API which is used for inference running our trained model.
 - Frontend Image: We created a Docker image for the frontend, which uses Streamlit to provide a user interface for interacting with the model.
 - Data Drift Detection Image: We built a Docker image for detecting data drift. This image includes the necessary scripts and dependencies to analyze data drift.
-**TODO: Link to docker and commands to run**
 
 ### Question 16
 
@@ -376,7 +371,6 @@ For our project, we developed several Docker images to streamline the developmen
 
 While the preference for how you prefer to debug code varies between people, all group members are comfortable using the VS Code Python Debugger to execute and check specific lines of code, and test different functionalities before running the entire script. This was especially useful when both processing then data, and setting up the model for training and evaluation.
 We also did a profiling of the model during a small training loop. This showed that the dataloader with just 1 worker was not taking up any processing time at all, and therefore it wasn’t needed to parallelize the data. It was hard to use the profiling of the layers in the model to much, as the model architecture is set from Huggingface.
-
 
 ## Working in the cloud
 
@@ -455,7 +449,8 @@ Google Logging and monitoring was also used to track the usage of the services, 
 >
 > Answer:
 
---- question 22 fill here ---
+We did not train the model in the cloud. While it would have been possible to do so, we instead utilized the access we had to a local GPU (Nvidia RTX 4070 Ti Super) with enough processing power to do the wandb sweep.
+If we had to instead do the training in the cloud, with e.g. Vertex AI, a docker image for the training would instead be built and pushed when submitting the train config. This config would further specify a separate config file with the specifications for the virtual machine, before finally sending the job to Vertex AI in the cloud on this VM. It would lastly also be responsible to parsing along any secrets from the Secret Manager as an wandb api key.
 
 ## Deployment
 
@@ -472,7 +467,9 @@ Google Logging and monitoring was also used to track the usage of the services, 
 >
 > Answer:
 
-We used FastAPI to make an endpoint for our backend which could then be called by the frontend which was made with streamlit. The structure of the API was very simple consisting of one root endpoint to check the API availability and a post endpoint /classify, taking an image (a file) as input and returning the predicted label and the probability distribution of the labels. One thing we could have done to maybe enhance our API was to maybe do some caching of the model to make the response time even faster.
+We used FastAPI to make an endpoint for our backend which could then be called by the frontend which was made with streamlit. The structure of the API was very simple consisting of one root endpoint to check the API availability and a post endpoint /classify, taking an image (a file) as input and returning the predicted label and the probability distribution of the labels.
+The model is loaded in the backend through wandb’s artifacts using that we can attach an alias to the wanted model. Here the chosen alias is *best*, and only the model with this unique alias will be used in our API. This was achieved by both parsing the wandb api key as a secret to the docker image from the Secret Manager, and exposing the same secret as an environment variable to the Cloud Run service.
+One thing we could have done to maybe enhance our API was to maybe do some caching of the model to make the response time even faster first response farster, as it takes some time to download the model from wandb when starting the backend up upon the first request.
 
 ### Question 24
 
@@ -503,7 +500,7 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 >
 > Answer:
 
---- question 25 fill here ---
+We used locust to load test our API giving the results below: (insert image)
 
 ### Question 26
 
@@ -518,7 +515,7 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 >
 > Answer:
 
---- question 26 fill here ---
+We did set up the standard monitoring in the google cloud UI. This monitors our cloud runs giving insights into the amount of requests to our api, cpu and memory utilization and potential error occurrences. The monitoring of our cloud buckets also provides insights into the storage data used and how much traffic the storage has. In general it is important to monitor the deployed model to ensure a reliable application and high uptime. Using monitoring one can quickly detect errors and fix them to ensure user satisfaction. It is also useful in regards to google cloud to manage the billing and budgeting depending on cloud usage. We could expand the monitoring system to look at even more specific metrics and set up pipelines for how to handle errors by for example sending emails to relevant stakeholders.
 
 ## Overall discussion of project
 
@@ -584,9 +581,9 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 >
 > Answer:
 
-The biggest challenge was that the github workflows could not be entirely tested locally before submitting them. Therefore there was a lot of trial and error
-with getting the workflows to run properly. The same goes with building in google cloud.
-(Skriv mere)
+The biggest challenge was that the github workflows could not be entirely tested locally before submitting them. Therefore there was a lot of trial and error with getting the workflows to run properly. The same goes with building in google cloud resulting in many build submissions and a lot of waiting time. Another pain point on this was to properly parse along the secrets in the Secret Manager the Cloud Run to load an artifact from wandb, as we didn’t know you could attach and expose a secret to a service through the GCP interface.
+This was the final solution we landed on after also considering just having the large model in Github, or in a model storage bucket on GCP. The last consideration did also result in the problems with dvc as having two remotes was not easy to handle either.
+For the most part the training of the model was okay, though there were some bumps with getting the sweeps and everything setup and running on a new team and also some trial and error on saving artifacts with correct names - here both referring to the torch save and onnx export.
 
 ### Question 31
 
@@ -604,7 +601,14 @@ with getting the workflows to run properly. The same goes with building in googl
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-Student s214611 made the docker containers and different cloudbuild.yaml configurations and made sure that the build were successfully submitted to
-google cloud and they were up and running.
+In general we have in the group been good at keep each other up to date on the progress of the tasks we divided between each other. So while members worked more on some things than others, all are kept continuously kept in the loop.
 
-We have used ChatGPT and GitHub Copilot to help debug our code and write code faster. Especially also helping make comments and doc strings in an aligned manner. Furthermore, ChatGPT has been used in some cases to edit spelling, rephrasing or concatenating pieces of text in some parts of this report. 
+Student s214611 made the docker containers and different cloudbuild.yaml configurations and made sure that the builds were successfully submitted to google cloud and they were up and running.
+
+Student s214647 setup most of the data processing and training of the model along with sending the sweeps to wandb. He also did profiling for the model, and helped with workflows.
+
+Student s214585 did the evaluation of the trained model on the test set along with adding a workflow for pre-commits. He also worked together with student s214647 on getting the api to work wandb.
+
+Student s201680 implemented different tests including a variety of unit and api tests. He was also a help on other projects.
+
+We have used ChatGPT and GitHub Copilot to help debug our code and write code faster. Especially also helping make comments and doc strings in an aligned manner. Furthermore, ChatGPT has been used in some cases to edit spelling, rephrasing or concatenating pieces of text in some parts of this report.
