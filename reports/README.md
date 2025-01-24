@@ -416,7 +416,6 @@ Google Logging and monitoring was also used to track the usage of the services, 
 
 We did not use the compute engine and virtual machines, as we trained our model locally. 
 
-
 ### Question 19
 
 > **Insert 1-2 images of your GCP bucket, such that we can see what data you have stored in it.**
@@ -511,7 +510,7 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 > Answer:
 
 We performed testing of the backend API. We tested both the root end point as well as the classify endpoint. We additionally tested some edge cases such as providing the API with an unallowed input (i.e. a .txt file even though it only accepts images) as well as no input at all.
-We furthermore performed load testing using locust using the same setup as in the exercises. This yielded an average response time of 130 ms, a median of 100 ms, and a 99th percentile of 1300 ms.
+We furthermore performed load testing using locust ([see results here](figures/locust_loadtest.png)) using the same setup as in the exercises. This yielded an average response time of 130 ms, a median of 100 ms, and a 99th percentile of 1300 ms.
 
 ### Question 26
 
@@ -545,7 +544,7 @@ We did set up the standard monitoring in the google cloud UI. This monitors our 
 >
 > Answer:
 
---- question 27 fill here ---
+At current time we ended up spending 1.34K credits (kr.) during the development and hosting of the application. The cloud storage is by far the most expensive part of the project contributing to approximately 75% of the costs. The next big contributor is “Container Registry Vulnerability Scanning”, and overall our build and artifact registry doesn't cost much. If we were to use the engine too to train our model we would expect prices to go further up especially if we were to train a model from scratch. Generally, we think working in the cloud comes with many possibilities and at relatively low costs, as we in case our data set was not open source would have to store it somewhere else thus probably having cloud storage expenses either way.
 
 ### Question 28
 
@@ -578,7 +577,9 @@ We have furthermore setup a framework for detecting data drifting.
 >
 > Answer:
 
---- question 29 fill here ---
+Whenever the data got changed (changes to the dvc config) a CML-workflow was run on the data which collected some descriptive statistics on the data.
+
+Thereafter you could run the train.py script to update the model weights and save this to wandb, doing so would trigger a workflow then pushing the changes. This workflow would use 3 cloudbuild.yaml and dockerfiles to create a backend API (fastapi) for the model, a frontend in streamlit and a datadrift monitoring api. When calls are made to the backend these are stored in a GCP bucket which is then collected by the datadrift service which monitors the system.
 
 ### Question 30
 
