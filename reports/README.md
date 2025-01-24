@@ -395,7 +395,7 @@ We used Google cloud storage buckets for storing the training data and for stori
 this was done to detect data drifting.
 Furthermore we also used Google Artifact registry to store our docker containers and
 we used google Run to host the containers on the web, so they were accessible.
-Google Logging and monitoring was also used to track the usage of the services, and IAM, service accoutns and secrets manager to manage permisssions. 
+Google Logging and monitoring was also used to track the usage of the services, and IAM, service accounts and secrets manager to manage permissions.
 
 ### Question 18
 
