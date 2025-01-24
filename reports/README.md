@@ -179,7 +179,8 @@ We initially chose to work with the UV dependency manager as it had shown to be 
 >
 > Answer:
 
-Using the cookiecutter template an overall structure for our repository was achieved dividing the code, saved models, data, tests, and further into different relevant folders. Along the project all relevant data collection, model definition, training, evaluation, and backend are contained in the *src* folder. Following the training, model configurations have been saved in the *models* folder in relevant subfolders for e.g. the sweep for hyperparameter optimization or profiling. The relevant .yaml files for configuring this are found in the *configs* folder. As the project uses dvc to handle the data, a *.dvc* has been added, while the *data* folder has been added to the .gitignore. In the data folder can also a onnx export of our model be found, which is used for the deployment. **TODO: Finalstructure after cleanup**
+Using the cookiecutter template an overall structure for our repository was achieved dividing the code, saved models, data, tests, and otherfile into different relevant folders. Along the project all relevant data collection, model definition, training, evaluation, and backend are contained in the *src* folder. Following the training, model configurations and exports have been saved in the *models* folder in relevant subfolders for e.g. the sweep for hyperparameter optimization or profiling - though some of these are added to the gitignore due to file sizes being big and not relevant for pushing. The relevant .yaml files for configuring this are found in the *configs* folder along with all cloudbuild files. As the project uses dvc to handle the data, a *.dvc* has been added, while the *data* folder has been added to the .gitignore. In the *.github* folder can all workflows for Github Actions be found, and dockerfiles are also found in their respective folder as layed out by the cookiecutter template. In the root of the repository can the ignore files be found together with all requirements files.
+**TODO: Finalstructure after cleanup**
 
 ### Question 6
 
@@ -246,8 +247,9 @@ The reason both formatting and documentations are important in larger projects, 
 >
 > Answer:
 
-We generally didn’t use branches and PRs in our project as we had a lot of communication and even pair programming during the project which made it less necessary. However, when we approached the end of the project and we were working on different solutions we made some branches each made for the specific function that was implemented. At this point we also had set up a great CI/CD pipeline including a testing workflow which allowed us to check that everything was working before merging the pull request into main. One of the benefits of working with branches is exactly that you can keep main stable and working while developing new features. Furthermore, it makes it easy to revert back to previous versions and in general work together with many people as you can review each other's code.
-
+In the start of the project we didn’t use branches or pull-requests as we had a lot of communication and even pair programming during the project which made it less necessary. Additionally, the start of getting a model loaded, setting up training, or processing the data could all be done in parallel without much of a problem.
+However, when we approached the end of the project, and we were working on different solutions, we utilized the advantage of branches to not ruin the working solution on the main branch. At this point we also had set up a great CI/CD pipeline including a testing workflow, which allowed us to check that everything was working before merging the pull request into main.
+One of the benefits of working with branches is exactly that you can keep main stable and working while developing new features. Furthermore, it makes it easy to revert back to previous versions and in general work together with many people as you can review each other's code.
 
 ### Question 10
 
@@ -393,8 +395,7 @@ We also did a profiling of the model during a small training loop. This showed t
 
 We used Google cloud storage buckets for storing the training data and for storing the logs when the backend was called with new images,
 this was done to detect data drifting.
-Furthermore we also used Google Artifact registry to store our docker containers and
-we used google Run to host the containers on the web, so they were accessible.
+Furthermore we also used Google Artifact registry to store our docker containers and we used google Run to host the containers on the web, so they were accessible.
 Google Logging and monitoring was also used to track the usage of the services.
 
 ### Question 18
@@ -605,3 +606,5 @@ with getting the workflows to run properly. The same goes with building in googl
 
 Student s214611 made the docker containers and different cloudbuild.yaml configurations and made sure that the build were successfully submitted to
 google cloud and they were up and running.
+
+We have used ChatGPT and GitHub Copilot to help debug our code and write code faster. Especially also helping make comments and doc strings in an aligned manner. Furthermore, ChatGPT has been used in some cases to edit spelling, rephrasing or concatenating pieces of text in some parts of this report. 
