@@ -245,7 +245,7 @@ The reason both formatting and documentations are important in larger projects, 
 >
 > Answer:
 
-In the start of the project we didn’t use branches or pull-requests as we had a lot of communication and even pair programming during the project which made it less necessary. Additionally, the start of getting a model loaded, setting up training, or processing the data could all be done in parallel without much of a problem.
+In the start of the project we didn't use branches or pull-requests as we had a lot of communication and even pair programming during the project which made it less necessary. Additionally, the start of getting a model loaded, setting up training, or processing the data could all be done in parallel without much of a problem.
 However, when we approached the end of the project, and we were working on different solutions, we utilized the advantage of branches to not ruin the working solution on the main branch. At this point we also had set up a great CI/CD pipeline including a testing workflow, which allowed us to check that everything was working before merging the pull request into main.
 One of the benefits of working with branches is exactly that you can keep main stable and working while developing new features. Furthermore, it makes it easy to revert back to previous versions and in general work together with many people as you can review each other's code.
 
@@ -284,7 +284,7 @@ Additionally, DVC enabled automation by maintaining the data in the cloud, ensur
 As mentioned in an earlier question, our continuous integration  setup is designed to ensure code quality and reliability through automated testing and linting. We have organized our CI into multiple workflows, each serving a specific purpose.
 - Unit Testing and Coverage: We run unit tests using pytest and measure code coverage using coverage. This ensures that our code is thoroughly tested and helps identify untested parts of the codebase. The workflow is triggered on every push and pull request to the main branch. We test our code on multiple operating systems (Ubuntu, Windows, and macOS) and Python versions 3.12 to ensure compatibility across different environments. We also use caching to speed up the installation of dependencies.
 - Linting: We use ruff for linting our code to ensure it adheres to coding standards and best practices. This helps maintain code quality and readability. The linting step is included in our pre-commit hooks and is also run as part of our CI workflow.
-- CML workflow: We use DVC to manage our data and model versions, and we then have a workflow which checks the data statistics of the data.
+- CML workflow: We use DVC to manage our data and model versions, and we then have a workflow which checks the data statistics of the data. A triggering of the workflow can be seen [here](https://github.com/dtu-degens/MLOps_2025/actions/runs/12934553156/job/36075840417).
 
 ## Running code and tracking experiments
 
@@ -304,7 +304,7 @@ As mentioned in an earlier question, our continuous integration  setup is design
 > Answer:
 
 For running experiments we used a config file to run a sweep for hyperparameter optimization through Weights and Biases. This tested different values for our model during training, which was possible to run due to the addition of the *typer* library, parsing the arguments along to the training loop when the file is called.
-The file can also be called a single time through *invoke* by writing *invoke train*. This will called a certain configuration set in the tasks.py file.
+The file can also be called a single time through *invoke* by writing *invoke train*. This will call a certain configuration set in the tasks.py file.
 
 ### Question 13
 
@@ -353,10 +353,11 @@ Lastly [the third image](figures/Sweep_diagram.png) shows what combination each 
 >
 > Answer:
 
-For our project, we developed several Docker images to streamline the development, training, and deployment processes. We created mainly two Docker images a backend and a frontend, but furthermore also a data drift detection. These are made to ensure consistency across different environments and to facilitate easy scaling and reproducibility.
+For our project, we developed several Docker images to streamline the development and deployment processes. We created mainly two Docker images a backend and a frontend, but furthermore also a data drift detection. These are made to ensure consistency across different environments and to facilitate easy scaling and reproducibility.
 - Backend Image: We built a Docker image for the backend, which includes the necessary scripts and dependencies to serve the backend API which is used for inference running our trained model.
 - Frontend Image: We created a Docker image for the frontend, which uses Streamlit to provide a user interface for interacting with the model.
 - Data Drift Detection Image: We built a Docker image for detecting data drift. This image includes the necessary scripts and dependencies to analyze data drift.
+Mostly our docker images were part of workflows or cloudbuild. Therefore, the backend docker image would as an example be built when running `gcloud builds submit --config cloudbuild_backend.yaml`. If would then be run by in the deploy phase as follows `run deploy backend-pokedec --image=europe-west3-docker.pkg.dev/$PROJECT_ID/mlops-container-registry/backend_pokedec:latests --region=europe-west3 --platform=managed`. A link to the docker file is [here](europe-west3-docker.pkg.dev/exalted-strata-447112-s0/mlops-container-registry/backend_pokedec@sha256:a5ad3f1bc7e71b8c55bd6ced6a99594ea682dad45d2eaff1d8d375fb4f9f9302).
 
 ### Question 16
 
