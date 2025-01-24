@@ -214,7 +214,7 @@ The reason both formatting and documentations are important in larger projects, 
 > *application but also ... .*
 >
 > Answer:
-In total, we have implemented tests for the model, dataloading, API functionality and helper functions used in the API. We have furthermore carried out load testing for the (backend) API. However, due to some issues with the secrets configuration, not all these tests are run in the continuous integration framework - but they have at the very least been run and passed locally. 
+In total, we have implemented tests for the model, dataloading, API functionality and helper functions used in the API. We have furthermore carried out load testing for the (backend) API. However, due to some issues with the secrets configuration, not all these tests are run in the continuous integration framework - but they have at the very least been run and passed locally.
 
 
 ### Question 8
@@ -229,7 +229,7 @@ In total, we have implemented tests for the model, dataloading, API functionalit
 > *code and even if we were then...*
 >
 > Answer:
-It appears that we only have 16% code coverage, but we suspect this to be higher in reality as it does not seem to take the model unit tests into consideration - we were unable to figure out why this happens. In case we did have a higher coverage, you cannot necessarily trust it to be error free - for instance, one might have overlooked edge cases which could give errors if specifically tested. 
+It appears that we only have 16% code coverage, but we suspect this to be higher in reality as it does not seem to take the model unit tests into consideration - we were unable to figure out why this happens. In case we did have a higher coverage, you cannot necessarily trust it to be error free - for instance, one might have overlooked edge cases which could give errors if specifically tested.
 
 ### Question 9
 
