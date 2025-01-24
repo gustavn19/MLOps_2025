@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 
 def load_model(model_version: int):
-    """Load a trained model from the specified version.
+    """Load a trained model from the specified version with pytorch (NOT ONNX).
 
     Args:
         model_version (int): The version of the model to load.
