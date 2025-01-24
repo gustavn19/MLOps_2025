@@ -163,7 +163,13 @@ We used the Huggingface page [PyTorch Image Models (TIMM)](https://github.com/hu
 >
 > Answer:
 
-We initially chose to work with the UV dependency manager as it had shown to be super fast and manage dependencies great across devices. The dependencies are listed in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*, and sorted in dependency groups depending on which case we need to use it. This can for an instance help us reduce the size of our docker images. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can run *uv sync* which creates a virtual environment (alternatively by running *uv venv*) and then download all relevant dependencies regardless of operating system. However in the project phase we encountered a few issues, so to easily reuse some of our code from the exercises made with pip we instead chose to list the dependencies in different requirements files. Each corresponds to the specific needs of the docker image it is used to create.
+We initially chose to work with the UV dependency manager as it had shown to be super fast and manage dependencies great across devices. The dependencies are listed in our *pyproject.toml* file, where a new dependency can be added by running the command *uv add ...*, and sorted in dependency groups depending on which case we need to use it. This can for an instance help us reduce the size of our docker images. For a new user to get a complete copy of our environment they first need to install UV on their device. Afterwards, they can run *uv sync which creates a virtual environment (alternatively by by running *uv venv*) and then download all relevant dependencies regardless of operating system. Afterwards *uv run is used to run files in the project. However in the project phase we encountered a few issues, so to easily reuse some of our code from the exercises made with pip we instead chose to list the dependencies in different requirements files. Each corresponds to the specific needs of the docker image it is used to create. To use requirement files on mac first use:
+```
+ python3 -m venv .venv
+ source .venv/bin/activate
+ pip install -r requirements_backend.txt
+ ```
+where you change the name to the relevant requirements file. 
 
 ### Question 5
 
@@ -214,8 +220,8 @@ The reason both formatting and documentations are important in larger projects, 
 > *application but also ... .*
 >
 > Answer:
+In total, we have implemented tests for the model, dataloading, API functionality and helper functions used in the API. We have furthermore carried out load testing for the (backend) API. However, due to some issues with the secrets configuration, not all these tests are run in the continuous integration framework - but they have at the very least been run and passed locally.
 
---- question 7 fill here ---
 
 ### Question 8
 
@@ -229,8 +235,7 @@ The reason both formatting and documentations are important in larger projects, 
 > *code and even if we were then...*
 >
 > Answer:
-
---- question 8 fill here ---
+It appears that we only have 16% code coverage, but we suspect this to be higher in reality as it does not seem to take the model unit tests into consideration - we were unable to figure out why this happens. In case we did have a higher coverage, you cannot necessarily trust it to be error free - for instance, one might have overlooked edge cases which could give errors if specifically tested.
 
 ### Question 9
 
@@ -503,7 +508,9 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 >
 > Answer:
 
-We used locust to load test our API giving the results below: (insert image)
+We performed testing of the backend API. We tested both the root end point as well as the classify endpoint. We additionally tested some edge cases such as providing the API with an unallowed input (i.e. a .txt file even though it only accepts images) as well as no input at all.
+We furthermore performed load testing using locust using the same setup as in the exercises. This yielded an average response time of 130 ms, a median of 100 ms, and a 99th percentile of 1300 ms.
+
 
 ### Question 26
 
