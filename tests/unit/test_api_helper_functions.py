@@ -1,6 +1,4 @@
 import numpy as np
-import onnxruntime
-import os
 
 # from pokedec.backend import save_prediction_to_gcp, predict_image, model
 import pokedec.backend as backend
@@ -8,8 +6,7 @@ import pokedec.backend as backend
 
 def test_predict_image():
     """Test the predict_image function."""
-    # global model
-    backend.model = onnxruntime.InferenceSession(os.path.join(os.getcwd(), "models", "onnx", "model_best.onnx"))
+    backend.lifespan(backend.app)
     image_path = "tests/tests_data/abra_api_testing_img.png"
     probabilities, prediction = backend.predict_image(image_path)
     assert isinstance(probabilities, np.ndarray)

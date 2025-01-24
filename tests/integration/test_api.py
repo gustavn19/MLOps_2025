@@ -8,7 +8,7 @@ def test_read_root():
     with TestClient(app) as client:
         response = client.get("/")
         assert response.status_code == 200
-        assert response.json() == {"message": "Hello from the backend!"}
+        assert response.json() == {"message": "Hello from the backend with wandb!"}
 
 
 # Test the classify endpoint
