@@ -560,7 +560,7 @@ We did set up the standard monitoring in the google cloud UI. This monitors our 
 >
 > Answer:
 We implemented a simple frontend for our API using streamlit, we did this to make the model easily available therefore relying on a simplistic design with only one possible action - uploading an image. This is easily done in streamlit using the file_uploader object, and hereafter calling our backend API. Based on the results we then display the prediction and a chart of the predicted probabilities for the top 10 most likely classes. Furthermore, we used ONNX to save our model to keep it in a standard format avoiding the need of pytorch to load our models. The deployed website can be found here [here](https://frontend-pokedec-228711502156.europe-west3.run.app/).
-We have furthermore setup a framework for detecting data drifting. 
+We have furthermore setup a framework for detecting data drifting.
 
 ### Question 29
 
