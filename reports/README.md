@@ -169,7 +169,7 @@ We initially chose to work with the UV dependency manager as it had shown to be 
  source .venv/bin/activate
  pip install -r requirements_backend.txt
  ```
-where you change the name to the relevant requirements file. 
+where you change the name to the relevant requirements file.
 
 ### Question 5
 
