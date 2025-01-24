@@ -51,7 +51,7 @@ pythonpath = [
 [tool.coverage.run]
 omit = ["tests/*", "*/_remote_module_non_scriptable.py", "src/pokedec/frontend.py"]
 branch = true
-source = ["pokedec"]
+source = ["src/pokedec"]
 
 [tool.coverage.report]
 show_missing = true
