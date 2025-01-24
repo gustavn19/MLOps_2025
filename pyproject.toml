@@ -48,7 +48,7 @@ pythonpath = [
 # TODO: Create dependencies for all workflows and dockerfiles and cloudbuilds
 
 [tool.coverage.run]
-omit = ["tests/*", "*/_remote_module_non_scriptable.py", "src/pokedec/backend.py", "src/pokedec/frontend.py"]
+omit = ["tests/*", "*/_remote_module_non_scriptable.py", "src/pokedec/frontend.py"]
 branch = true
 source = ["pokedec"]
 
