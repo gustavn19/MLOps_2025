@@ -1,6 +1,6 @@
 from torch.utils.data import Dataset
 
-from pokedec.data import PokeData
+from data import PokeData
 
 
 def test_my_dataset():

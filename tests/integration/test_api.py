@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from pokedec.backend import app
+from backend import app
 
 
 #### BASIC TESTS ####

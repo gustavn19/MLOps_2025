@@ -3,7 +3,7 @@ import onnxruntime
 import os
 
 # from pokedec.backend import save_prediction_to_gcp, predict_image, model
-import pokedec.backend as backend
+import backend as backend
 
 
 def test_predict_image():
