@@ -167,7 +167,7 @@ We initially chose to work with the UV dependency manager as it had shown to be 
 ```
  python3 -m venv .venv
  source .venv/bin/activate
- pip install -r requirements_backend.txt
+ pip install -r requirements.txt
  ```
 where you change the name to the relevant requirements file.
 
@@ -185,7 +185,7 @@ where you change the name to the relevant requirements file.
 >
 > Answer:
 
-Using the cookiecutter template an overall structure for our repository was achieved dividing the code, saved models, data, tests, and otherfile into different relevant folders. Along the project all relevant data collection, model definition, training, evaluation, and backend are contained in the *src* folder. Following the training, model configurations and exports have been saved in the *models* folder in relevant subfolders for e.g. the sweep for hyperparameter optimization or profiling - though some of these are added to the gitignore due to file sizes being big and not relevant for pushing. The relevant .yaml files for configuring this are found in the *configs* folder along with all cloudbuild files. As the project uses dvc to handle the data, a *.dvc* has been added, while the *data* folder has been added to the .gitignore. In the *.github* folder can all workflows for Github Actions be found, and dockerfiles are also found in their respective folder as laid out by the cookiecutter template. In the root of the repository can the ignore files be found together with all requirements files.
+Using the cookiecutter template an overall structure for our repository was achieved dividing the code, saved models, data, tests, and other file into different relevant folders. Along the project all relevant data collection, model definition, training, evaluation, and backend are contained in the *src* folder. Following the training, model configurations and exports have been saved in the *models* folder in relevant subfolders for e.g. the sweep for hyperparameter optimization or profiling - though some of these are added to the gitignore due to file sizes being big and not relevant for pushing. The relevant .yaml files for configuring this are found in the *configs* folder along with all cloudbuild files. As the project uses dvc to handle the data, a *.dvc* has been added, while the *data* folder has been added to the .gitignore. In the *.github* folder can all workflows for Github Actions be found, and dockerfiles are also found in their respective folder as laid out by the cookiecutter template. In the root of the repository can the ignore files be found together with all requirements files. Some extra folders, like notebooks, was deleted, as these were irrelevant.
 
 ### Question 6
 
@@ -220,8 +220,8 @@ The reason both formatting and documentations are important in larger projects, 
 > *application but also ... .*
 >
 > Answer:
-In total, we have implemented tests for the model, dataloading, API functionality and helper functions used in the API. We have furthermore carried out load testing for the (backend) API. However, due to some issues with the secrets configuration, not all these tests are run in the continuous integration framework - but they have at the very least been run and passed locally.
 
+In total, we have implemented tests for the model, dataloading, API functionality and helper functions used in the API. We have furthermore carried out load testing for the (backend) API. However, due to some issues with the secrets configuration, not all these tests are run in the continuous integration framework - but they have at the very least been run and passed locally.
 
 ### Question 8
 
@@ -235,6 +235,7 @@ In total, we have implemented tests for the model, dataloading, API functionalit
 > *code and even if we were then...*
 >
 > Answer:
+
 It appears that we only have 16% code coverage, but we suspect this to be higher in reality as it does not seem to take the model unit tests into consideration - we were unable to figure out why this happens. In case we did have a higher coverage, you cannot necessarily trust it to be error free - for instance, one might have overlooked edge cases which could give errors if specifically tested.
 
 ### Question 9
@@ -493,7 +494,7 @@ One thing we could have done to maybe enhance our API was to maybe do some cachi
 >
 > Answer:
 
-We managed to deploy our API in the cloud using the google cloud run, we did so by first containerising the API into an application using docker (locally only writing the docker file). Then we would use gcloud build summit specifying a config file cloubuild_backend containing the steps for first building the image, then pushing the image into the artifact registry and then deploying using cloud run. The link to the hosted API is [here](https://backend-pokedec-228711502156.europe-west3.run.app/docs?fbclid=IwZXh0bgNhZW0CMTEAAR3qRjYHBhRdPM5MuNGGrzR3PEkQklV4vnPjVWMdkpv2LPVHfcz2wQM1AyU_aem_Vwkqx1o5GWBtL_Ua4KBIpw#/)
+We managed to deploy our API in the cloud using the google cloud run, we did so by first containerising the API into an application using docker (locally only writing the docker file). Then we would use gcloud build summit specifying a config file cloubuild_backend containing the steps for first building the image, then pushing the image into the artifact registry and then deploying using cloud run. The link to the hosted API is [here](https://backend-pokedec-228711502156.europe-west3.run.app/docs#/)
 
 ### Question 25
 
@@ -510,7 +511,6 @@ We managed to deploy our API in the cloud using the google cloud run, we did so 
 
 We performed testing of the backend API. We tested both the root end point as well as the classify endpoint. We additionally tested some edge cases such as providing the API with an unallowed input (i.e. a .txt file even though it only accepts images) as well as no input at all.
 We furthermore performed load testing using locust using the same setup as in the exercises. This yielded an average response time of 130 ms, a median of 100 ms, and a 99th percentile of 1300 ms.
-
 
 ### Question 26
 
