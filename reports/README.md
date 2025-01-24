@@ -424,6 +424,7 @@ We did not use the compute engine and virtual machines, as we trained our model 
 > Answer:
 
 [Our Buckets](figures/our_buckets.png)
+
 [Inside Our Bucket](figures/our_bucekt_inside.png)
 
 ### Question 20
@@ -434,6 +435,7 @@ We did not use the compute engine and virtual machines, as we trained our model 
 > Answer:
 
 [Our Registry](figures/our_registry.png)
+
 [Inside our Registry](figures/our_registry_inside.png)
 
 ### Question 21
@@ -494,7 +496,7 @@ One thing we could have done to maybe enhance our API was to maybe do some cachi
 >
 > Answer:
 
-We managed to deploy our API in the cloud using the google cloud run, we did so by first containerising the API into an application using docker (locally only writing the docker file). Then we would use gcloud build summit specifying a config file cloubuild_backend containing the steps for first building the image, then pushing the image into the artifact registry and then deploying using cloud run. The link to the hosted API is [here](https://backend-pokedec-228711502156.europe-west3.run.app/docs#/)
+We managed to deploy our API in the cloud using the google cloud run, we did so by first containerising the API into an application using docker (locally only writing the docker file). Then we would use gcloud build summit specifying a config file cloubuild_backend containing the steps for first building the image, then pushing the image into the artifact registry and then deploying using cloud run. The link to the hosted API is [here](https://backend-pokedec-228711502156.europe-west3.run.app/docs#/).
 
 ### Question 25
 
@@ -559,6 +561,7 @@ At current time we ended up spending 1.34K credits (kr.) during the development 
 > *implemented using ...*
 >
 > Answer:
+
 We implemented a simple frontend for our API using streamlit, we did this to make the model easily available therefore relying on a simplistic design with only one possible action - uploading an image. This is easily done in streamlit using the file_uploader object, and hereafter calling our backend API. Based on the results we then display the prediction and a chart of the predicted probabilities for the top 10 most likely classes. Furthermore, we used ONNX to save our model to keep it in a standard format avoiding the need of pytorch to load our models. The deployed website can be found here [here](https://frontend-pokedec-228711502156.europe-west3.run.app/).
 We have furthermore setup a framework for detecting data drifting.
 
